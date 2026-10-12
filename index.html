@@ -772,6 +772,29 @@
       </div>
     </div>
 
+    <div class="divider" id="divider-highlight">Firemný highlight roku 2026</div>
+
+    <!-- Highlight 2026 -->
+    <div class="info-card">
+      <div class="card-body" style="display:flex;flex-direction:column;gap:16px">
+        <p style="font-size:14px;line-height:1.65;color:var(--fg-muted);margin:0" id="highlight-intro">Podeľte sa o váš firemný moment tohto roka — situácia, ktorá vám ostane v pamäti.</p>
+        <div class="field" id="f-highlight-foto">
+          <label for="highlight-foto-url"><span id="lbl-highlight-foto">Fotografia momentu</span></label>
+          <small style="color:var(--fg-muted);font-size:12px;margin-bottom:4px;display:block" id="highlight-foto-hint">Nahrajte na Google Drive a vložte link</small>
+          <div class="link-input-wrap">
+            <input type="url" id="highlight-foto-url" name="highlight_foto_url" placeholder="https://drive.google.com/…">
+            <span class="link-status-icon" id="highlight-foto-icon" aria-hidden="true"></span>
+          </div>
+          <div class="field-hint-small" id="highlight-foto-fb" hidden></div>
+        </div>
+        <div class="field" id="f-highlight-popis">
+          <label for="highlight-popis"><span id="lbl-highlight-popis">Popis situácie</span></label>
+          <small style="color:var(--fg-muted);font-size:12px;margin-bottom:4px;display:block" id="highlight-popis-hint">Čo sa stalo, prečo to pre vás znamená veľa — 2 až 4 vety</small>
+          <textarea id="highlight-popis" name="highlight_popis" rows="4" placeholder="Napr. V máji sme podpísali prvý enterprise kontrakt. Bol to moment, keď sme si uvedomili, že náš produkt skutočne funguje aj pre veľkých zákazníkov."></textarea>
+        </div>
+      </div>
+    </div>
+
     <div class="divider" id="divider-deck">Pitch Deck</div>
 
     <!-- Deck -->
@@ -943,6 +966,13 @@ const T = {
     'lbl-startup-linkedin': 'LinkedIn firmy',
     'lbl-startup-web':  'Web firmy',
     'lbl-linkedin1':    'LinkedIn', 'lbl-linkedin2': 'LinkedIn',
+    'divider-highlight': 'Firemný highlight roku 2026',
+    'highlight-intro': 'Podeľte sa o váš firemný moment tohto roka — situácia, ktorá vám ostane v pamäti.',
+    'lbl-highlight-foto':  'Fotografia momentu',
+    'highlight-foto-hint': 'Nahrajte na Google Drive a vložte link',
+    'lbl-highlight-popis': 'Popis situácie',
+    'highlight-popis-hint':'Čo sa stalo, prečo to pre vás znamená veľa — 2 až 4 vety',
+    'ph-highlight-popis':  'Napr. V máji sme podpísali prvý enterprise kontrakt. Bol to moment, keď sme si uvedomili, že náš produkt skutočne funguje aj pre veľkých zákazníkov.',
     'lbl-deck':         'Odkaz na pitch deck',
     'ph-deck':        'https://drive.google.com/file/d/…',
     'err-deck':       'Vložte platný odkaz na Google Drive',
@@ -1051,6 +1081,13 @@ const T = {
     'lbl-startup-linkedin': 'Company LinkedIn',
     'lbl-startup-web':  'Company website',
     'lbl-linkedin1':    'LinkedIn', 'lbl-linkedin2': 'LinkedIn',
+    'divider-highlight': 'Company highlight of 2026',
+    'highlight-intro': 'Share your company moment of the year — a situation that will stay with you.',
+    'lbl-highlight-foto':  'Photo of the moment',
+    'highlight-foto-hint': 'Upload to Google Drive and paste the link',
+    'lbl-highlight-popis': 'Description',
+    'highlight-popis-hint':'What happened and why it means a lot to you — 2 to 4 sentences',
+    'ph-highlight-popis':  'E.g. In May we signed our first enterprise contract. That was the moment we realised our product truly works for large customers too.',
     'lbl-deck':         'Pitch deck link',
     'ph-deck':        'https://drive.google.com/file/d/…',
     'err-deck':       'Please enter a valid Google Drive link',
@@ -1102,6 +1139,8 @@ const TEXT_IDS = [
   'lbl-deck','err-deck',
   'fb-checking','fb-ok','fb-warn',
   'fb-err-title','fb-err-body',
+  'highlight-intro','lbl-highlight-foto','highlight-foto-hint',
+  'lbl-highlight-popis','highlight-popis-hint',
   'footer-text',
 ];
 
@@ -1109,7 +1148,7 @@ const TEXT_IDS = [
 const HTML_IDS = ['deck-intro-p','success-p'];
 
 // Divider text nodes (dividers contain only text)
-const DIVIDER_MAP = {'divider-m2':'divider-m2','divider-deck':'divider-deck'};
+const DIVIDER_MAP = {'divider-m2':'divider-m2','divider-highlight':'divider-highlight','divider-deck':'divider-deck'};
 
 function applyLang(lang) {
   const t = T[lang];
@@ -1134,6 +1173,8 @@ function applyLang(lang) {
   // Dividers
   const dm2 = document.getElementById('divider-m2');
   if (dm2) dm2.textContent = t['divider-m2'];
+  const dhl = document.getElementById('divider-highlight');
+  if (dhl) dhl.textContent = t['divider-highlight'];
   const dd = document.getElementById('divider-deck');
   if (dd) dd.textContent = t['divider-deck'];
 
@@ -1152,6 +1193,7 @@ function applyLang(lang) {
     'logo-url':'ph-logo',
     'm1-pozicia':'ph-pozicia','m2-pozicia':'ph-pozicia',
     'bootcamp-goal':'ph-bootcamp-goal',
+    'highlight-popis':'ph-highlight-popis',
   };
   Object.entries(phMap).forEach(([inputId, key]) => {
     const el = document.getElementById(inputId);
@@ -1276,7 +1318,7 @@ function setIcon(state) {
 }
 
 // ── Inline Drive link check with status tracking ──────────────────────────
-const inlineStatus = { m1foto: 'idle', m2foto: 'idle' };
+const inlineStatus = { m1foto: 'idle', m2foto: 'idle', hlFoto: 'idle' };
 
 async function verifyInlineLink(inputId, iconId, fbId, okKey, privateKey, warnKey, statusKey, fieldId) {
   const url = (document.getElementById(inputId)?.value || '').trim();
@@ -1332,6 +1374,10 @@ document.getElementById('m2-foto-url')?.addEventListener('input', e => {
   inlineStatus.m2foto = 'idle';
   document.getElementById('f-m2-foto')?.classList.remove('has-error');
   debounceInline('m2f','m2-foto-url','foto2-icon','foto2-fb','foto-ok','foto-private','foto-warn','m2foto','f-m2-foto');
+});
+document.getElementById('highlight-foto-url')?.addEventListener('input', () => {
+  inlineStatus.hlFoto = 'idle';
+  debounceInline('hlf','highlight-foto-url','highlight-foto-icon','highlight-foto-fb','foto-ok','foto-private','foto-warn','hlFoto','f-highlight-foto');
 });
 
 // ── Logo link check with status tracking ──────────────────────────────────
@@ -1513,7 +1559,7 @@ document.getElementById('form').addEventListener('submit', async e => {
   e.preventDefault();
   const t = T[currentLang];
   const btn = document.getElementById('submit-btn');
-  if (deckStatus === 'checking' || logoStatus === 'checking' || inlineStatus.m1foto === 'checking' || inlineStatus.m2foto === 'checking') {
+  if (deckStatus === 'checking' || logoStatus === 'checking' || inlineStatus.m1foto === 'checking' || inlineStatus.m2foto === 'checking' || inlineStatus.hlFoto === 'checking') {
     btn.textContent = t['submit-wait']; btn.disabled = true;
     await new Promise(r => setTimeout(r, 2500));
     btn.disabled = false; btn.textContent = t['submit-btn'];
@@ -1561,9 +1607,11 @@ document.getElementById('form').addEventListener('submit', async e => {
     pain_points:    val('pain-points'),
     bootcamp_goal:  val('bootcamp-goal'),
     deck_url:       val('deck-url'),
+    highlight_foto: val('highlight-foto-url'),
+    highlight_popis: val('highlight-popis'),
   };
 
-  const AT_TOKEN  = 'pat7xG0HKjWhjmcN8.1cd4a093ad1b414da116a772305f04adff178ba0bbc35b852e0274285458e552';
+  const AT_TOKEN  = 'pathRhNK88fkrhCgw.7bbb5c3e2f455ee7fdf7f18b160409f918f723a6ab443d979f58bdc4f18cd7ed';
   const AT_BASE   = 'appXBMoZQ4s6cDoEv';
   const AT_TABLE  = 'tblHZjvlLgn7aQ9B7';
   const AT_URL    = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}`;
@@ -1601,6 +1649,8 @@ document.getElementById('form').addEventListener('submit', async e => {
     'Izba':               payload.izba_consent === 'Áno',
     'Všetky dni':         payload.all_days === 'Áno',
     'Deck URL':           payload.deck_url,
+    'Highlight Foto':     payload.highlight_foto  || undefined,
+    'Highlight Popis':    payload.highlight_popis || undefined,
   };
 
   try {
@@ -1636,3 +1686,4 @@ document.getElementById('form').addEventListener('submit', async e => {
   s.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 </script>
+
