@@ -1586,7 +1586,7 @@ document.getElementById('form').addEventListener('submit', async e => {
     'M1 Email':           payload.m1_email,
     'M1 Tričko':          payload.m1_tricko,
     'M1 Alergie':         payload.m1_alergie,
-    'M1 18+':             payload.m1_vek,
+    'M1 18+':             payload.m1_vek === 'ano',
     'M2 Meno':            payload.m2_meno,
     'M2 Priezvisko':      payload.m2_priezvisko,
     'M2 Pozícia':         payload.m2_pozicia,
@@ -1597,9 +1597,9 @@ document.getElementById('form').addEventListener('submit', async e => {
     'M2 Email':           payload.m2_email,
     'M2 Tričko':          payload.m2_tricko,
     'M2 Alergie':         payload.m2_alergie,
-    'M2 18+':             payload.m2_vek,
-    'Izba':               payload.izba_consent,
-    'Všetky dni':         payload.all_days,
+    'M2 18+':             payload.m2_vek === 'ano',
+    'Izba':               payload.izba_consent === 'Áno',
+    'Všetky dni':         payload.all_days === 'Áno',
     'Deck URL':           payload.deck_url,
   };
 
