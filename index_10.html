@@ -1,0 +1,1688 @@
+<title>SASK Bootcamp Registration</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
+
+<style>
+  /* SASK brand tokens */
+  :root {
+    --sask-blue: #0F6BFF;
+    --sask-blue-light: #77ABFF;
+    --sask-purple: #D948F6;
+    --sask-purple-light: #EB73FF;
+    --sask-salmon: #FFA5A5;
+    --sask-gradient: linear-gradient(135deg, #0F6BFF 0%, #D948F6 100%);
+    --sask-gradient-full: linear-gradient(180deg, #77ABFF 0%, #7E87FF 50%, #EB73FF 80%, #FFA5A5 100%);
+
+    --bg: #F5F5F5;
+    --surface: #FFFFFF;
+    --border: #E4E4E4;
+    --fg: #000000;
+    --fg-muted: #858585;
+    --accent: #0F6BFF;
+    --accent-bg: #EEF3FF;
+    --accent-dark: #0955D4;
+    --member-1: #0F6BFF;
+    --member-2: #D948F6;
+    --deck-color: #7E87FF;
+    --deck-bg: #F0F0FF;
+    --deck-border: rgba(126,135,255,.3);
+    --ok: #16A34A;
+    --ok-bg: #F0FDF4;
+    --err: #DC2626;
+    --err-bg: #FEF2F2;
+    --warn: #D97706;
+    --warn-bg: #FFFBEB;
+    --shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
+    --radius: 12px;
+    --radius-sm: 8px;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:#0A0A0A;--surface:#141414;--border:#262626;--fg:#FFFFFF;--fg-muted:#858585;
+      --accent:#77ABFF;--accent-bg:#0D1929;--accent-dark:#9DC4FF;
+      --member-1:#77ABFF;--member-2:#EB73FF;
+      --deck-color:#A5ADFF;--deck-bg:#0F0F28;--deck-border:rgba(165,173,255,.25);
+      --ok:#4ADE80;--ok-bg:#052E16;--err:#F87171;--err-bg:#2A0909;--warn:#FCD34D;--warn-bg:#1C1500;
+      --shadow:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#0A0A0A;--surface:#141414;--border:#262626;--fg:#FFFFFF;--fg-muted:#858585;
+    --accent:#77ABFF;--accent-bg:#0D1929;--accent-dark:#9DC4FF;
+    --member-1:#77ABFF;--member-2:#EB73FF;
+    --deck-color:#A5ADFF;--deck-bg:#0F0F28;--deck-border:rgba(165,173,255,.25);
+    --ok:#4ADE80;--ok-bg:#052E16;--err:#F87171;--err-bg:#2A0909;--warn:#FCD34D;--warn-bg:#1C1500;
+    --shadow:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+    color-scheme:dark;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    min-height: 100%;
+    padding-inline: 20px;
+    padding-block: 28px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 660px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  /* ── Lang toggle ── */
+  .lang-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: -16px;
+  }
+  .lang-toggle {
+    display: inline-flex;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 100px;
+    padding: 3px;
+    gap: 2px;
+    box-shadow: var(--shadow);
+  }
+  .lang-btn {
+    background: none;
+    border: none;
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    color: var(--fg-muted);
+    letter-spacing: .06em;
+    transition: background .15s, color .15s;
+  }
+  .lang-btn.active {
+    background: var(--sask-gradient);
+    color: #fff;
+  }
+
+  /* ── Header ── */
+  .header { text-align: center; padding-block: 4px 0; }
+
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--sask-gradient);
+    color: #fff;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(15,107,255,.25);
+  }
+  .logo-dot { width:6px;height:6px;background:rgba(255,255,255,.7);border-radius:50%; }
+
+  .header h1 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: clamp(24px,5vw,34px);
+    font-weight: 700;
+    line-height: 1.18;
+    letter-spacing: -.025em;
+    text-wrap: balance;
+    color: var(--fg);
+    margin-bottom: 12px;
+  }
+  .header h1 span {
+    background: var(--sask-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header p {
+    font-size: 15px;
+    color: var(--fg-muted);
+    line-height: 1.6;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  /* ── Cards ── */
+  .member-card, .deck-card, .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .deck-card {
+    border-color: var(--deck-border);
+    box-shadow: var(--shadow), 0 0 0 1px var(--deck-border);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .deck-card .card-header {
+    border-bottom-color: var(--deck-border);
+    background: var(--deck-bg);
+  }
+
+  .member-number, .deck-icon-badge {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .m1 .member-number { background: var(--member-1); }
+  .m2 .member-number { background: var(--member-2); }
+  .deck-icon-badge { background: var(--deck-color); }
+
+  .card-label { font-size: 15px; font-weight: 600; font-family: 'Space Grotesk', system-ui, sans-serif; color: var(--fg); }
+  .deck-card .card-label { color: var(--deck-color); }
+  .card-sublabel { font-size: 12px; color: var(--fg-muted); margin-top: 1px; }
+
+  .card-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  @media (max-width: 480px) {
+    .field-row { grid-template-columns: 1fr; }
+    .card-body { padding: 18px; }
+    .card-header { padding: 14px 18px; }
+    body { padding-inline: 14px; }
+  }
+
+  /* ── Drive link small feedback ── */
+  .field-hint-small {
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 5px 9px;
+    border-radius: 6px;
+  }
+  .field-hint-small.hint-ok   { color: var(--ok); background: var(--ok-bg); }
+  .field-hint-small.hint-err  { color: var(--err); background: var(--err-bg); }
+  .field-hint-small.hint-warn { color: var(--warn); background: var(--warn-bg); }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+
+  label { font-size: 13px; font-weight: 500; color: var(--fg); letter-spacing: .01em; }
+  .required-star { color: var(--accent); margin-left: 2px; }
+
+  input[type="text"], input[type="email"], input[type="tel"], input[type="url"],
+  textarea, select {
+    width: 100%;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 13px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--fg);
+    transition: border-color .15s, box-shadow .15s;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2371717A' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 34px;
+    cursor: pointer;
+  }
+  textarea { resize: vertical; min-height: 64px; line-height: 1.5; }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(15,107,255,.15);
+  }
+  input::placeholder, textarea::placeholder { color: var(--fg-muted); opacity: .7; }
+
+  /* ── Checkbox ── */
+  .checkbox-field {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 14px;
+    background: var(--accent-bg);
+    border: 1.5px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .checkbox-field input[type="checkbox"] {
+    appearance: none; -webkit-appearance: none;
+    width: 18px; height: 18px; min-width: 18px;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    background: var(--surface);
+    cursor: pointer;
+    position: relative;
+    transition: background .12s, border-color .12s;
+    margin-top: 1px;
+  }
+  .checkbox-field input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .checkbox-field input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 5px;
+    width: 5px; height: 9px;
+    border: 2px solid #fff;
+    border-top: none; border-left: none;
+    transform: rotate(45deg);
+  }
+  .checkbox-field input[type="checkbox"]:focus {
+    box-shadow: 0 0 0 3px rgba(15,107,255,.2);
+    border-color: var(--accent);
+  }
+  .checkbox-label { font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--fg); cursor: pointer; }
+  .checkbox-label small { display: block; font-size: 12px; font-weight: 400; color: var(--fg-muted); margin-top: 2px; }
+
+  /* ── Radio ── */
+  .radio-group { display: flex; gap: 10px; }
+  .radio-option {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 16px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    flex: 1;
+    font-size: 14px; font-weight: 500;
+  }
+  .radio-option:has(input:checked) {
+    border-color: var(--accent);
+    background: var(--accent-bg);
+  }
+  .radio-option input[type="radio"] {
+    appearance: none; -webkit-appearance: none;
+    width: 16px; height: 16px; min-width: 16px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    background: var(--surface);
+    cursor: pointer;
+    transition: border-color .12s;
+  }
+  .radio-option input[type="radio"]:checked {
+    border-color: var(--accent);
+    border-width: 5px;
+  }
+  .radio-option input[type="radio"]:focus { box-shadow: 0 0 0 3px rgba(15,107,255,.2); }
+
+  /* ── Divider ── */
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--fg-muted);
+    font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
+  }
+  .divider::before, .divider::after { content:''; flex:1; height:1px; background: var(--border); }
+  #divider-m2, #divider-deck { margin-top: 8px; margin-bottom: 8px; }
+
+  /* ── Deck section ── */
+  .deck-intro { display: flex; flex-direction: column; gap: 10px; }
+  .deck-intro p { font-size: 14px; line-height: 1.65; color: var(--fg-muted); }
+  .deck-intro p strong { color: var(--fg); }
+
+  .yc-link {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13px; font-weight: 500;
+    color: var(--deck-color);
+    text-decoration: none;
+    padding: 7px 11px;
+    background: var(--deck-bg);
+    border: 1px solid var(--deck-border);
+    border-radius: var(--radius-sm);
+    width: fit-content;
+    transition: opacity .15s;
+  }
+  .yc-link:hover { opacity: .75; }
+
+  .share-guide {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .share-guide-title { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--fg-muted); }
+  .share-guide ol { padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+  .share-guide li { font-size: 13px; line-height: 1.5; color: var(--fg-muted); }
+  .share-guide li strong { color: var(--fg); font-weight: 600; }
+
+  .link-input-wrap { position: relative; }
+  .link-input-wrap input[type="url"] {
+    padding-right: 40px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+  }
+  .link-status-icon {
+    position: absolute; right: 12px; top: 50%;
+    transform: translateY(-50%);
+    width: 18px; height: 18px;
+    display: none; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .link-status-icon.visible { display: flex; }
+  @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+  .link-status-icon.spinning {
+    display: flex;
+    animation: spin .7s linear infinite;
+    font-size: 13px; opacity: .6;
+    transform-origin: center 43%;
+  }
+
+  .deck-feedback {
+    display: none;
+    font-size: 13.5px; line-height: 1.55;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid transparent;
+  }
+  .deck-feedback.visible { display: block; }
+  .deck-feedback-checking { background: var(--bg); border-color: var(--border); color: var(--fg-muted); }
+  .deck-feedback-ok { background: var(--ok-bg); border-color: color-mix(in srgb,var(--ok) 35%,transparent); color: var(--ok); font-weight: 500; }
+  .deck-feedback-err { background: var(--err-bg); border-color: color-mix(in srgb,var(--err) 35%,transparent); color: var(--err); }
+  .deck-feedback-err strong { display: block; margin-bottom: 4px; }
+  .deck-feedback-err ol { padding-left: 18px; margin-top: 6px; display: flex; flex-direction: column; gap: 2px; font-size: 13px; opacity: .9; }
+  .deck-feedback-warn { background: var(--warn-bg); border-color: color-mix(in srgb,var(--warn) 40%,transparent); color: var(--warn); }
+
+  /* ── Submit ── */
+  .submit-section { display: flex; flex-direction: column; gap: 14px; align-items: center; padding-bottom: 32px; }
+  button[type="submit"] {
+    width: 100%; max-width: 400px;
+    background: var(--sask-gradient); color: #fff;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: 15px; font-weight: 600;
+    padding: 14px 28px; border: none;
+    border-radius: var(--radius); cursor: pointer;
+    letter-spacing: -.01em;
+    transition: opacity .15s, transform .1s, box-shadow .15s;
+    box-shadow: 0 2px 12px rgba(15,107,255,.3);
+    position: relative;
+  }
+  button[type="submit"]:hover { opacity: .88; box-shadow: 0 4px 18px rgba(15,107,255,.4); transform: translateY(-1px); }
+  button[type="submit"]:active { transform: translateY(0); }
+  button[type="submit"]:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+  .submit-note { font-size: 12px; color: var(--fg-muted); text-align: center; }
+
+  /* ── Validation ── */
+  .field-error { font-size: 11.5px; color: var(--err); display: none; }
+  .field.has-error .field-error { display: block; }
+  .field.has-error input, .field.has-error select, .field.has-error textarea {
+    border-color: var(--err);
+    box-shadow: 0 0 0 3px rgba(239,68,68,.1);
+  }
+
+  /* ── Success ── */
+  .success-banner {
+    background: var(--surface);
+    border: 1.5px solid rgba(15,107,255,.25);
+    border-radius: var(--radius);
+    padding: 36px 24px; text-align: center;
+    display: none;
+    box-shadow: 0 0 0 1px rgba(15,107,255,.1);
+  }
+  .success-banner.visible { display: block; }
+  .success-icon {
+    width: 56px; height: 56px;
+    background: var(--sask-gradient); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px; font-size: 24px; color: #fff;
+    box-shadow: 0 4px 16px rgba(15,107,255,.3);
+  }
+  .success-banner h2 { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -.02em; }
+  .success-banner p { font-size: 14px; color: var(--fg-muted); line-height: 1.6; }
+
+  /* ── Top gradient bar ── */
+  body::before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--sask-gradient);
+    z-index: 100;
+  }
+
+  /* ── File upload ── */
+  .file-upload-label {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 13px;
+    background: var(--bg);
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 13px; color: var(--fg-muted);
+    transition: border-color .15s, background .15s;
+  }
+  .file-upload-label:hover { border-color: var(--accent); background: var(--accent-bg); }
+  .file-upload-label input[type="file"] { display: none; }
+  .file-upload-icon { font-size: 16px; flex-shrink: 0; }
+  .file-upload-name { font-size: 13px; color: var(--fg); font-weight: 500; }
+
+  /* ── Footer ── */
+  .footer { text-align: center; font-size: 12px; color: var(--fg-muted); padding-top: 8px; }
+  .footer strong { color: var(--fg); }
+
+  /* ── SASK logo text ── */
+  .sask-wordmark {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .04em;
+    background: var(--sask-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+</style>
+
+<div class="page">
+
+  <!-- Lang toggle -->
+  <div class="lang-row">
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button class="lang-btn active" data-lang="SK" id="btn-sk">SK</button>
+      <button class="lang-btn" data-lang="EN" id="btn-en">EN</button>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="logo-badge">
+      <span class="logo-dot"></span>
+      SASK O.Z.
+      <span class="logo-dot"></span>
+    </div>
+    <h1 id="h1-main">Registrácia na<br><span id="h1-accent">Startups Bootcamp</span></h1>
+    <p id="header-desc">Vyplňte údaje za oboch členov vášho tímu. Formulár slúži na organizačné účely podujatia.</p>
+  </header>
+
+  <form id="form" novalidate>
+
+    <!-- Startup info -->
+    <div class="deck-card">
+      <div class="card-header">
+        <div class="deck-icon-badge">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 1L10.5 6H15L11 9.5L12.5 15L8 12L3.5 15L5 9.5L1 6H5.5L8 1Z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="card-label" id="startup-card-label">Váš startup</div>
+          <div class="card-sublabel" id="startup-card-sublabel">Základné informácie o firme</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="field" id="f-startup-name">
+          <label for="startup-name"><span id="lbl-startup-name">Názov startupu</span> <span class="required-star">*</span></label>
+          <input type="text" id="startup-name" name="startup_name" placeholder="napr. Acme AI">
+          <span class="field-error" id="err-startup-name">Vyplňte názov startupu</span>
+        </div>
+        <div class="field" id="f-oneliner">
+          <label for="startup-oneliner"><span id="lbl-oneliner">One-liner o vašom startupe</span> <span class="required-star">*</span></label>
+          <input type="text" id="startup-oneliner" name="startup_oneliner" placeholder="Napr. AI nástroj, ktorý pomáha malým firmám automatizovať fakturáciu" maxlength="160">
+          <span class="field-error" id="err-oneliner">Vyplňte one-liner</span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="startup-linkedin" id="lbl-startup-linkedin">LinkedIn firmy</label>
+            <input type="url" id="startup-linkedin" name="startup_linkedin" placeholder="https://linkedin.com/company/…">
+          </div>
+          <div class="field">
+            <label for="startup-web" id="lbl-startup-web">Web firmy</label>
+            <input type="url" id="startup-web" name="startup_web" placeholder="https://vasafirma.sk">
+          </div>
+        </div>
+        <div class="field" id="f-logo">
+          <label><span id="lbl-logo">Logo startupu</span> <span class="required-star">*</span></label>
+          <small style="color:var(--fg-muted);font-size:12px;margin-bottom:6px;display:block" id="logo-hint">Nahrajte na Google Drive a vložte link — PNG alebo SVG, ideálne na bielom pozadí, vo vysokom rozlíšení</small>
+          <div class="link-input-wrap">
+            <input type="url" id="logo-url" name="logo_url" placeholder="https://drive.google.com/…">
+            <span class="link-status-icon" id="logo-icon" aria-hidden="true"></span>
+          </div>
+          <span class="field-error" id="err-logo">Vložte link na logo</span>
+          <div class="field-hint-small" id="logo-fb" hidden></div>
+        </div>
+        <div class="field" id="f-painpoints">
+          <label for="pain-points"><span id="lbl-painpoints">Aktuálne výzvy</span> <span class="required-star">*</span></label>
+          <textarea id="pain-points" name="pain_points" placeholder="Opíšte hlavné výzvy, s ktorými sa váš startup aktuálne stretáva…" rows="3"></textarea>
+          <span class="field-error" id="err-painpoints">Opíšte aktuálne výzvy</span>
+        </div>
+        <div class="field" id="f-bootcamp-goal">
+          <label for="bootcamp-goal"><span id="lbl-bootcamp-goal">Čo si z bootcampu chcete odniesť?</span> <span class="required-star">*</span></label>
+          <small style="color:var(--fg-muted);font-size:12px;margin-bottom:6px;display:block" id="bootcamp-goal-hint">Opíšte, v čom vás vie mentoring posunúť a kde očakávate, že budú rady mentorov najviac užitočné</small>
+          <textarea id="bootcamp-goal" name="bootcamp_goal" placeholder="Napr. Nevieme, či ísť do B2B alebo B2C — testovali sme oba smery, ale výsledky sú nejednoznačné. Hľadáme framework, ako sa rozhodnúť s obmedzenými dátami." rows="4"></textarea>
+          <span class="field-error" id="err-bootcamp-goal">Vyplňte čo chcete z bootcampu odniesť</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Member 1 -->
+    <div class="member-card m1">
+      <div class="card-header">
+        <div class="member-number">1</div>
+        <div><div class="card-label" id="m1-label">Člen tímu č. 1</div></div>
+      </div>
+      <div class="card-body">
+        <div class="field-row">
+          <div class="field" id="f-m1-meno">
+            <label for="m1-meno"><span id="lbl-meno1">Meno</span> <span class="required-star">*</span></label>
+            <input type="text" id="m1-meno" name="m1_meno" placeholder="Ján" autocomplete="given-name" required>
+            <span class="field-error" id="err-meno1">Vyplňte meno</span>
+          </div>
+          <div class="field" id="f-m1-priezvisko">
+            <label for="m1-priezvisko"><span id="lbl-priezvisko1">Priezvisko</span> <span class="required-star">*</span></label>
+            <input type="text" id="m1-priezvisko" name="m1_priezvisko" placeholder="Novák" autocomplete="family-name" required>
+            <span class="field-error" id="err-priezvisko1">Vyplňte priezvisko</span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field" id="f-m1-tel">
+            <label for="m1-tel"><span id="lbl-tel1">Telefónne číslo</span> <span class="required-star">*</span></label>
+            <input type="tel" id="m1-tel" name="m1_tel" placeholder="+421 900 000 000" autocomplete="tel" required>
+            <span class="field-error" id="err-tel1">Vyplňte telefón</span>
+          </div>
+          <div class="field" id="f-m1-email">
+            <label for="m1-email"><span id="lbl-email1">E-mail</span> <span class="required-star">*</span></label>
+            <input type="email" id="m1-email" name="m1_email" placeholder="jan@example.sk" autocomplete="email" required>
+            <span class="field-error" id="err-email1">Zadajte platný e-mail</span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field" id="f-m1-pozicia">
+            <label for="m1-pozicia"><span id="lbl-pozicia1">Pozícia v tíme</span> <span class="required-star">*</span></label>
+            <input type="text" id="m1-pozicia" name="m1_pozicia" placeholder="napr. CEO, CTO, Designer…">
+            <span class="field-error" id="err-pozicia1">Vyplňte pozíciu</span>
+          </div>
+          <div class="field" id="f-m1-foto">
+            <label><span id="lbl-foto1">Fotografia</span> <span class="required-star">*</span></label>
+            <div class="link-input-wrap">
+              <input type="url" id="m1-foto-url" name="m1_foto_url" placeholder="https://drive.google.com/…">
+              <span class="link-status-icon" id="foto1-icon" aria-hidden="true"></span>
+            </div>
+            <span class="field-error" id="err-foto1">Vložte link na fotografiu</span>
+            <div class="field-hint-small" id="foto1-fb" hidden></div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field" id="f-m1-tricko">
+            <label for="m1-tricko"><span id="lbl-tricko1">Veľkosť trička</span> <span class="required-star">*</span></label>
+            <select id="m1-tricko" name="m1_tricko" required>
+              <option value="" disabled selected id="opt-select1">— vybrať —</option>
+              <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
+            </select>
+            <span class="field-error" id="err-tricko1">Vyberte veľkosť</span>
+          </div>
+          <div class="field">
+            <label for="m1-alergie" id="lbl-alergie1">Alergie / intolerancie</label>
+            <input type="text" id="m1-alergie" name="m1_alergie" placeholder="napr. laktóza, orechy…">
+          </div>
+        </div>
+        <div class="field" id="f-m1-bio">
+          <label for="m1-bio"><span id="lbl-bio1">Bio</span> <span class="required-star">*</span></label>
+          <small style="color:var(--fg-muted);font-size:12px;margin-bottom:4px;display:block" id="bio-hint1">3 – 5 viet. Kde teraz pôsobí a v akej roli, čo robil predtým — oblasť, typy firiem, roky praxe</small>
+          <textarea id="m1-bio" name="m1_bio" placeholder="Napr. Pracujem 3 roky v oblasti SaaS produktov, predtým som študoval informatiku na FIIT. Zaujímam sa o growth a UX." rows="3"></textarea>
+          <span class="field-error" id="err-bio1">Vyplňte bio</span>
+        </div>
+        <div class="field">
+          <label for="m1-linkedin" id="lbl-linkedin1">LinkedIn</label>
+          <input type="url" id="m1-linkedin" name="m1_linkedin" placeholder="https://linkedin.com/in/…">
+        </div>
+        <div class="field">
+          <label><span id="vek-lbl1">Mám viac ako 18 rokov</span> <span class="required-star">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option" for="m1-vek-ano">
+              <input type="radio" id="m1-vek-ano" name="m1_vek" value="ano">
+              <span id="vek-ano1">Áno</span>
+            </label>
+            <label class="radio-option" for="m1-vek-nie">
+              <input type="radio" id="m1-vek-nie" name="m1_vek" value="nie">
+              <span id="vek-nie1">Nie</span>
+            </label>
+          </div>
+          <small id="vek-small1" style="color:var(--fg-muted);font-size:12px;margin-top:2px">Ak ste mladší ako 18 rokov, ozveme sa vám individuálne — nie je to však prekážkou v účasti</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider" id="divider-m2">Člen č. 2</div>
+
+    <!-- Member 2 -->
+    <div class="member-card m2">
+      <div class="card-header">
+        <div class="member-number">2</div>
+        <div><div class="card-label" id="m2-label">Člen tímu č. 2</div></div>
+      </div>
+      <div class="card-body">
+        <div class="field-row">
+          <div class="field" id="f-m2-meno">
+            <label for="m2-meno"><span id="lbl-meno2">Meno</span> <span class="required-star">*</span></label>
+            <input type="text" id="m2-meno" name="m2_meno" placeholder="Jana" autocomplete="given-name" required>
+            <span class="field-error" id="err-meno2">Vyplňte meno</span>
+          </div>
+          <div class="field" id="f-m2-priezvisko">
+            <label for="m2-priezvisko"><span id="lbl-priezvisko2">Priezvisko</span> <span class="required-star">*</span></label>
+            <input type="text" id="m2-priezvisko" name="m2_priezvisko" placeholder="Nováková" autocomplete="family-name" required>
+            <span class="field-error" id="err-priezvisko2">Vyplňte priezvisko</span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field" id="f-m2-tel">
+            <label for="m2-tel"><span id="lbl-tel2">Telefónne číslo</span> <span class="required-star">*</span></label>
+            <input type="tel" id="m2-tel" name="m2_tel" placeholder="+421 900 000 000" autocomplete="tel" required>
+            <span class="field-error" id="err-tel2">Vyplňte telefón</span>
+          </div>
+          <div class="field" id="f-m2-email">
+            <label for="m2-email"><span id="lbl-email2">E-mail</span> <span class="required-star">*</span></label>
+            <input type="email" id="m2-email" name="m2_email" placeholder="jana@example.sk" autocomplete="email" required>
+            <span class="field-error" id="err-email2">Zadajte platný e-mail</span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field" id="f-m2-pozicia">
+            <label for="m2-pozicia"><span id="lbl-pozicia2">Pozícia v tíme</span> <span class="required-star">*</span></label>
+            <input type="text" id="m2-pozicia" name="m2_pozicia" placeholder="napr. CEO, CTO, Designer…">
+            <span class="field-error" id="err-pozicia2">Vyplňte pozíciu</span>
+          </div>
+          <div class="field" id="f-m2-foto">
+            <label><span id="lbl-foto2">Fotografia</span> <span class="required-star">*</span></label>
+            <div class="link-input-wrap">
+              <input type="url" id="m2-foto-url" name="m2_foto_url" placeholder="https://drive.google.com/…">
+              <span class="link-status-icon" id="foto2-icon" aria-hidden="true"></span>
+            </div>
+            <span class="field-error" id="err-foto2">Vložte link na fotografiu</span>
+            <div class="field-hint-small" id="foto2-fb" hidden></div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field" id="f-m2-tricko">
+            <label for="m2-tricko"><span id="lbl-tricko2">Veľkosť trička</span> <span class="required-star">*</span></label>
+            <select id="m2-tricko" name="m2_tricko" required>
+              <option value="" disabled selected id="opt-select2">— vybrať —</option>
+              <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
+            </select>
+            <span class="field-error" id="err-tricko2">Vyberte veľkosť</span>
+          </div>
+          <div class="field">
+            <label for="m2-alergie" id="lbl-alergie2">Alergie / intolerancie</label>
+            <input type="text" id="m2-alergie" name="m2_alergie" placeholder="napr. laktóza, orechy…">
+          </div>
+        </div>
+        <div class="field" id="f-m2-bio">
+          <label for="m2-bio"><span id="lbl-bio2">Bio</span> <span class="required-star">*</span></label>
+          <small style="color:var(--fg-muted);font-size:12px;margin-bottom:4px;display:block" id="bio-hint2">3 – 5 viet. Kde teraz pôsobí a v akej roli, čo robil predtým — oblasť, typy firiem, roky praxe</small>
+          <textarea id="m2-bio" name="m2_bio" placeholder="Napr. Pracujem 3 roky v oblasti SaaS produktov, predtým som študoval informatiku na FIIT. Zaujímam sa o growth a UX." rows="3"></textarea>
+          <span class="field-error" id="err-bio2">Vyplňte bio</span>
+        </div>
+        <div class="field">
+          <label for="m2-linkedin" id="lbl-linkedin2">LinkedIn</label>
+          <input type="url" id="m2-linkedin" name="m2_linkedin" placeholder="https://linkedin.com/in/…">
+        </div>
+        <div class="field">
+          <label><span id="vek-lbl2">Mám viac ako 18 rokov</span> <span class="required-star">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option" for="m2-vek-ano">
+              <input type="radio" id="m2-vek-ano" name="m2_vek" value="ano">
+              <span id="vek-ano2">Áno</span>
+            </label>
+            <label class="radio-option" for="m2-vek-nie">
+              <input type="radio" id="m2-vek-nie" name="m2_vek" value="nie">
+              <span id="vek-nie2">Nie</span>
+            </label>
+          </div>
+          <small id="vek-small2" style="color:var(--fg-muted);font-size:12px;margin-top:2px">Ak ste mladší ako 18 rokov, ozveme sa vám individuálne — nie je to však prekážkou v účasti</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Consents -->
+    <div class="info-card">
+      <div class="card-body">
+        <label class="checkbox-field" for="izba-consent">
+          <input type="checkbox" id="izba-consent" name="izba_consent" required>
+          <div class="checkbox-label">
+            <span id="lbl-izba">Beriem na vedomie, že s členom môjho tímu budem zdieľať jednu izbu</span> <span class="required-star">*</span>
+          </div>
+        </label>
+        <label class="checkbox-field" for="all-days-consent">
+          <input type="checkbox" id="all-days-consent" name="all_days_consent" required>
+          <div class="checkbox-label">
+            <span id="lbl-alldays">Potvrdzujeme, že sa zúčastníme všetkých 3 dní bootcampu</span> <span class="required-star">*</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="divider" id="divider-highlight">Firemný highlight roku 2026</div>
+
+    <!-- Highlight 2026 -->
+    <div class="info-card">
+      <div class="card-body" style="display:flex;flex-direction:column;gap:16px">
+        <p style="font-size:14px;line-height:1.65;color:var(--fg-muted);margin:0" id="highlight-intro">Podeľte sa o váš najväčší firemný moment tohto roka — situácia, ktorá vám ostane v pamäti.</p>
+        <div class="field" id="f-highlight-foto">
+          <label for="highlight-foto-url"><span id="lbl-highlight-foto">Fotografia momentu</span></label>
+          <small style="color:var(--fg-muted);font-size:12px;margin-bottom:4px;display:block" id="highlight-foto-hint">Nahrajte na Google Drive a vložte link</small>
+          <div class="link-input-wrap">
+            <input type="url" id="highlight-foto-url" name="highlight_foto_url" placeholder="https://drive.google.com/…">
+            <span class="link-status-icon" id="highlight-foto-icon" aria-hidden="true"></span>
+          </div>
+          <div class="field-hint-small" id="highlight-foto-fb" hidden></div>
+        </div>
+        <div class="field" id="f-highlight-popis">
+          <label for="highlight-popis"><span id="lbl-highlight-popis">Popis situácie</span></label>
+          <small style="color:var(--fg-muted);font-size:12px;margin-bottom:4px;display:block" id="highlight-popis-hint">Čo sa stalo, prečo to pre vás znamená veľa — 2 až 4 vety</small>
+          <textarea id="highlight-popis" name="highlight_popis" rows="4" placeholder="Napr. V máji sme podpísali prvý enterprise kontrakt. Bol to moment, keď sme si uvedomili, že náš produkt skutočne funguje aj pre veľkých zákazníkov."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider" id="divider-deck">Pitch Deck</div>
+
+    <!-- Deck -->
+    <div class="deck-card">
+      <div class="card-header">
+        <div class="deck-icon-badge">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="1" y="2" width="14" height="10" rx="1.5" stroke="white" stroke-width="1.4"/>
+            <path d="M5 14h6M8 12v2" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="card-label">Pitch Deck</div>
+          <div class="card-sublabel" id="deck-sublabel">Povinná príloha — odkaz na Google Drive</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="deck-intro">
+          <p id="deck-intro-p">Nahrajte váš pitch deck na <strong>Google Drive</strong> a zdieľajte odkaz nižšie. Deck bude pred bootcampom zdieľaný s mentormi a partnermi, aby sa mohli vopred pripraviť na vaše mentoring sessions — prosíme teda o jeho verejnú dostupnosť.</p>
+          <a class="yc-link" href="https://www.ycombinator.com/library/2u-how-to-build-your-seed-round-pitch-deck" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M11.5 2.5L2.5 11.5M11.5 2.5H7M11.5 2.5V7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span id="yc-link-text">Tip: Ako postaviť seed pitch deck — Y Combinator</span>
+          </a>
+        </div>
+        <div class="share-guide">
+          <div class="share-guide-title" id="guide-title">Ako nastaviť verejný prístup v Google Drive</div>
+          <ol id="guide-steps-ol">
+            <li>Otvorte súbor v <strong>Google Drive</strong></li>
+            <li>Kliknite na <strong>Zdieľať</strong> (vpravo hore)</li>
+            <li>V sekcii „Všeobecný prístup" zvoľte <strong>Ktokoľvek s odkazom</strong></li>
+            <li>Nastavte oprávnenie na <strong>Čitateľ</strong></li>
+            <li>Skopírujte odkaz a vložte ho sem</li>
+          </ol>
+        </div>
+        <div class="field" id="f-deck">
+          <label for="deck-url"><span id="lbl-deck">Odkaz na pitch deck</span> <span class="required-star">*</span></label>
+          <div class="link-input-wrap">
+            <input type="url" id="deck-url" name="deck_url" placeholder="https://drive.google.com/file/d/…" required>
+            <span class="link-status-icon" id="link-icon" aria-hidden="true"></span>
+          </div>
+          <span class="field-error" id="err-deck">Vložte platný odkaz na Google Drive</span>
+        </div>
+        <div class="deck-feedback deck-feedback-checking" id="fb-checking">Overujem verejnú dostupnosť odkazu…</div>
+        <div class="deck-feedback deck-feedback-ok" id="fb-ok">✓ Deck je verejne prístupný — mentori a partneri k nemu budú mať prístup.</div>
+        <div class="deck-feedback deck-feedback-err" id="fb-err">
+          <strong id="fb-err-title">⚠ Deck nie je verejne dostupný.</strong>
+          <span id="fb-err-body">Aby ho mohli otvoriť mentori a partneri, prosíme vás o nastavenie:</span>
+          <ol id="err-steps-ol">
+            <li>V Google Drive kliknite na <strong>Zdieľať</strong></li>
+            <li>Zvoľte <strong>Ktokoľvek s odkazom → Čitateľ</strong></li>
+            <li>Skopírujte aktualizovaný odkaz a vložte ho sem</li>
+          </ol>
+        </div>
+        <div class="deck-feedback deck-feedback-warn" id="fb-warn">⚠ Dostupnosť odkazu sa nepodarilo overiť. Uistite sa, že zdieľanie je nastavené na „Ktokoľvek s odkazom" — inak k decku nebudú mať mentori prístup.</div>
+      </div>
+    </div>
+
+    <div class="submit-section">
+      <button type="submit" id="submit-btn">Odoslať registráciu →</button>
+      <p class="submit-note" id="submit-note">Polia označené <span style="color:var(--accent)">*</span> sú povinné</p>
+    </div>
+  </form>
+
+  <div class="success-banner" id="success">
+    <div class="success-icon">✓</div>
+    <h2 id="success-h2">Registrácia prijatá!</h2>
+    <p id="success-p">Ďakujeme. Potvrdzujúci e-mail dostanete čoskoro.<br>Tešíme sa na vás na bootcampe.</p>
+  </div>
+
+  <footer class="footer">
+    <span class="sask-wordmark">SASK O.Z.</span> <span id="footer-text">· Startups Bootcamp 2026</span>
+  </footer>
+</div>
+
+<script>
+// ── Translations ──────────────────────────────────────────────────────────
+const T = {
+  SK: {
+    'h1-main':        'Registrácia na',
+    'h1-accent':      'Startups Bootcamp',
+    'header-desc':    'Vyplňte údaje za oboch členov vášho tímu. Formulár slúži na organizačné účely podujatia.',
+    'm1-label':       'Člen tímu č. 1',
+    'm2-label':       'Člen tímu č. 2',
+    'divider-m2':     'Člen č. 2',
+    'divider-deck':   'Pitch Deck',
+    // Labels
+    'lbl-meno1':      'Meno',      'lbl-meno2':      'Meno',
+    'lbl-priezvisko1':'Priezvisko','lbl-priezvisko2':'Priezvisko',
+    'lbl-tel1':       'Telefónne číslo','lbl-tel2':   'Telefónne číslo',
+    'lbl-email1':     'E-mail',    'lbl-email2':     'E-mail',
+    'lbl-tricko1':    'Veľkosť trička','lbl-tricko2':'Veľkosť trička',
+    'lbl-alergie1':   'Alergie / intolerancie',
+    'lbl-alergie2':   'Alergie / intolerancie',
+    // Placeholders (applied via JS)
+    'ph-meno1':       'Ján',       'ph-meno2':       'Jana',
+    'ph-priezvisko1': 'Novák',     'ph-priezvisko2': 'Nováková',
+    'ph-tel':         '+421 900 000 000',
+    'ph-email1':      'jan@example.sk','ph-email2':   'jana@example.sk',
+    'ph-alergie':     'napr. laktóza, orechy…',
+    'ph-prichod':     'napr. piatok 14:00 – 15:00',
+    'opt-select':     '— vybrať —',
+    // Errors
+    'err-meno1':      'Vyplňte meno',   'err-meno2':      'Vyplňte meno',
+    'err-priezvisko1':'Vyplňte priezvisko','err-priezvisko2':'Vyplňte priezvisko',
+    'err-tel1':       'Vyplňte telefón','err-tel2':       'Vyplňte telefón',
+    'err-email1':     'Zadajte platný e-mail','err-email2':'Zadajte platný e-mail',
+    'err-tricko1':    'Vyberte veľkosť','err-tricko2':    'Vyberte veľkosť',
+    // Checkboxes
+    'vek-lbl1':       'Mám viac ako 18 rokov',
+    'vek-ano1':       'Áno', 'vek-nie1': 'Nie',
+    'vek-small1':     'Ak ste mladší ako 18 rokov, ozveme sa vám individuálne — nie je to však prekážkou v účasti',
+    'vek-lbl2':       'Mám viac ako 18 rokov',
+    'vek-ano2':       'Áno', 'vek-nie2': 'Nie',
+    'vek-small2':     'Ak ste mladší ako 18 rokov, ozveme sa vám individuálne — nie je to však prekážkou v účasti',
+    'lbl-izba':       'Beriem na vedomie, že s členom môjho tímu budem zdieľať jednu izbu',
+    'lbl-alldays':    'Potvrdzujeme, že sa zúčastníme všetkých 3 dní bootcampu',
+    // Deck
+    'deck-sublabel':  'Povinná príloha — odkaz na Google Drive',
+    'deck-intro-p':   'Nahrajte váš pitch deck na <strong>Google Drive</strong> a zdieľajte odkaz nižšie. Deck bude pred bootcampom zdieľaný s mentormi a partnermi, aby sa mohli vopred pripraviť na vaše mentoring sessions — prosíme teda o jeho verejnú dostupnosť.',
+    'yc-link-text':   'Tip: Ako postaviť seed pitch deck — Y Combinator',
+    'guide-title':    'Ako nastaviť verejný prístup v Google Drive',
+    'guide-steps':    [
+      'Otvorte súbor v <strong>Google Drive</strong>',
+      'Kliknite na <strong>Zdieľať</strong> (vpravo hore)',
+      'V sekcii „Všeobecný prístup" zvoľte <strong>Ktokoľvek s odkazom</strong>',
+      'Nastavte oprávnenie na <strong>Čitateľ</strong>',
+      'Skopírujte odkaz a vložte ho sem',
+    ],
+    'startup-card-label':    'Váš startup',
+    'startup-card-sublabel': 'Základné informácie o firme',
+    'lbl-startup-name': 'Názov startupu',
+    'ph-startup-name':  'napr. Acme AI',
+    'err-startup-name': 'Vyplňte názov startupu',
+    'lbl-oneliner':     'One-liner o vašom startupe',
+    'ph-oneliner':      'Napr. AI nástroj, ktorý pomáha malým firmám automatizovať fakturáciu',
+    'err-oneliner':     'Vyplňte one-liner',
+    'lbl-painpoints':   'Aktuálne výzvy',
+    'ph-painpoints':    'Opíšte hlavné výzvy, s ktorými sa váš startup aktuálne stretáva…',
+    'err-painpoints':   'Opíšte aktuálne výzvy',
+    'lbl-logo':         'Logo startupu',
+    'logo-hint':        'Nahrajte na Google Drive a vložte link — PNG alebo SVG, ideálne na bielom pozadí, vo vysokom rozlíšení',
+    'err-logo':         'Vložte link na logo',
+    'ph-logo':          'https://drive.google.com/…',
+    'logo-ok':          '✓ Logo je prístupné',
+    'logo-private':     'Súbor nie je verejne prístupný — nastavte „Ktokoľvek s odkazom"',
+    'logo-warn':        'Dostupnosť sa nepodarilo overiť — skontrolujte zdieľanie',
+    'lbl-bootcamp-goal':'Čo si z bootcampu chcete odniesť?',
+    'bootcamp-goal-hint':'Opíšte, v čom vás vie mentoring posunúť a kde očakávate, že budú rady mentorov najviac užitočné',
+    'err-bootcamp-goal':'Vyplňte čo chcete z bootcampu odniesť',
+    'ph-bootcamp-goal': 'Napr. Nevieme, či ísť do B2B alebo B2C — testovali sme oba smery, ale výsledky sú nejednoznačné. Hľadáme framework, ako sa rozhodnúť s obmedzenými dátami.',
+    'lbl-pozicia1':     'Pozícia v tíme', 'lbl-pozicia2': 'Pozícia v tíme',
+    'err-pozicia1':     'Vyplňte pozíciu', 'err-pozicia2': 'Vyplňte pozíciu',
+    'ph-pozicia':       'napr. CEO, CTO, Designer…',
+    'lbl-bio1':         'Bio', 'lbl-bio2': 'Bio',
+    'bio-hint1':        '3 – 5 viet. Kde teraz pôsobí a v akej roli, čo robil predtým — oblasť, typy firiem, roky praxe',
+    'bio-hint2':        '3 – 5 viet. Kde teraz pôsobí a v akej roli, čo robil predtým — oblasť, typy firiem, roky praxe',
+    'ph-bio':           'Napr. Roman pracuje ako Head of Marketing v spoločnosti XX. Predtým mal skúsenosti prevažne zo sales v stredne veľkých firmách.',
+    'err-bio1':         'Vyplňte bio', 'err-bio2': 'Vyplňte bio',
+    'lbl-foto1':        'Fotografia', 'lbl-foto2': 'Fotografia',
+    'foto-hint1':       'Portrét vo vysokom rozlíšení — nahrajte na Google Drive a vložte link',
+    'foto-hint2':       'Portrét vo vysokom rozlíšení — nahrajte na Google Drive a vložte link',
+    'ph-foto':          'https://drive.google.com/…',
+    'err-foto1':        'Vložte link na fotografiu', 'err-foto2': 'Vložte link na fotografiu',
+    'foto-ok':          '✓ Fotografia je prístupná',
+    'foto-private':     'Súbor nie je verejne prístupný — nastavte „Ktokoľvek s odkazom"',
+    'foto-warn':        'Dostupnosť sa nepodarilo overiť — skontrolujte zdieľanie',
+    'lbl-startup-linkedin': 'LinkedIn firmy',
+    'lbl-startup-web':  'Web firmy',
+    'lbl-linkedin1':    'LinkedIn', 'lbl-linkedin2': 'LinkedIn',
+    'divider-highlight': 'Firemný highlight roku 2026',
+    'highlight-intro': 'Podeľte sa o váš najväčší firemný moment tohto roka — situácia, ktorá vám ostane v pamäti.',
+    'lbl-highlight-foto':  'Fotografia momentu',
+    'highlight-foto-hint': 'Nahrajte na Google Drive a vložte link',
+    'lbl-highlight-popis': 'Popis situácie',
+    'highlight-popis-hint':'Čo sa stalo, prečo to pre vás znamená veľa — 2 až 4 vety',
+    'ph-highlight-popis':  'Napr. V máji sme podpísali prvý enterprise kontrakt. Bol to moment, keď sme si uvedomili, že náš produkt skutočne funguje aj pre veľkých zákazníkov.',
+    'lbl-deck':         'Odkaz na pitch deck',
+    'ph-deck':        'https://drive.google.com/file/d/…',
+    'err-deck':       'Vložte platný odkaz na Google Drive',
+    'fb-checking':    'Overujem verejnú dostupnosť odkazu…',
+    'fb-ok':          '✓ Deck je verejne prístupný — mentori a partneri k nemu budú mať prístup.',
+    'fb-err-title':   '⚠ Deck nie je verejne dostupný.',
+    'fb-err-body':    'Aby ho mohli otvoriť mentori a partneri, prosíme vás o nastavenie:',
+    'err-steps':      [
+      'V Google Drive kliknite na <strong>Zdieľať</strong>',
+      'Zvoľte <strong>Ktokoľvek s odkazom → Čitateľ</strong>',
+      'Skopírujte aktualizovaný odkaz a vložte ho sem',
+    ],
+    'fb-warn':        '⚠ Dostupnosť odkazu sa nepodarilo overiť. Uistite sa, že zdieľanie je nastavené na „Ktokoľvek s odkazom" — inak k decku nebudú mať mentori prístup.',
+    'submit-btn':     'Odoslať registráciu →',
+    'submit-note-txt':'sú povinné',
+    'submit-wait':    'Overujem deck…',
+    'submit-sending': 'Odosielam…',
+    'success-h2':     'Registrácia prijatá!',
+    'success-p':      'Ďakujeme. Potvrdzujúci e-mail dostanete čoskoro.<br>Tešíme sa na vás na bootcampe.',
+    'footer-text':    '· Startups Bootcamp 2026',
+  },
+  EN: {
+    'h1-main':        'Registration for',
+    'h1-accent':      'Startups Bootcamp',
+    'header-desc':    'Please fill in the details for both team members. This form is for event organisational purposes.',
+    'm1-label':       'Team Member #1',
+    'm2-label':       'Team Member #2',
+    'divider-m2':     'Member #2',
+    'divider-deck':   'Pitch Deck',
+    'lbl-meno1':      'First name',   'lbl-meno2':      'First name',
+    'lbl-priezvisko1':'Last name',    'lbl-priezvisko2':'Last name',
+    'lbl-tel1':       'Phone number', 'lbl-tel2':       'Phone number',
+    'lbl-email1':     'E-mail',       'lbl-email2':     'E-mail',
+    'lbl-tricko1':    'T-shirt size', 'lbl-tricko2':    'T-shirt size',
+    'lbl-alergie1':   'Allergies / intolerances',
+    'lbl-alergie2':   'Allergies / intolerances',
+    'ph-meno1':       'John',         'ph-meno2':       'Jane',
+    'ph-priezvisko1': 'Smith',        'ph-priezvisko2': 'Smith',
+    'ph-tel':         '+421 900 000 000',
+    'ph-email1':      'john@example.com','ph-email2':   'jane@example.com',
+    'ph-alergie':     'e.g. lactose, nuts…',
+    'ph-prichod':     'e.g. Friday 2:00 – 3:00 PM',
+    'opt-select':     '— select —',
+    'err-meno1':      'Please enter first name','err-meno2': 'Please enter first name',
+    'err-priezvisko1':'Please enter last name','err-priezvisko2':'Please enter last name',
+    'err-tel1':       'Please enter phone number','err-tel2': 'Please enter phone number',
+    'err-email1':     'Please enter a valid e-mail','err-email2':'Please enter a valid e-mail',
+    'err-tricko1':    'Please select a size','err-tricko2':'Please select a size',
+    'vek-lbl1':       'I am over 18 years old',
+    'vek-ano1':       'Yes', 'vek-nie1': 'No',
+    'vek-small1':     'If you are under 18, we will reach out to you individually — this is not a barrier to participation',
+    'vek-lbl2':       'I am over 18 years old',
+    'vek-ano2':       'Yes', 'vek-nie2': 'No',
+    'vek-small2':     'If you are under 18, we will reach out to you individually — this is not a barrier to participation',
+    'lbl-izba':       'I acknowledge that I will share a room with my team member',
+    'lbl-alldays':    'We confirm that we will attend all 3 days of the bootcamp',
+    'deck-sublabel':  'Required attachment — Google Drive link',
+    'deck-intro-p':   'Upload your pitch deck to <strong>Google Drive</strong> and share the link below. The deck will be shared with mentors and partners before the bootcamp so they can prepare for your mentoring sessions — please make sure it is publicly accessible.',
+    'yc-link-text':   'Tip: How to build a seed pitch deck — Y Combinator',
+    'guide-title':    'How to set public access in Google Drive',
+    'guide-steps':    [
+      'Open the file in <strong>Google Drive</strong>',
+      'Click <strong>Share</strong> (top right)',
+      'Under "General access" select <strong>Anyone with the link</strong>',
+      'Set permission to <strong>Viewer</strong>',
+      'Copy the link and paste it here',
+    ],
+    'startup-card-label':    'Your startup',
+    'startup-card-sublabel': 'Basic information about your company',
+    'lbl-startup-name': 'Startup name',
+    'ph-startup-name':  'e.g. Acme AI',
+    'err-startup-name': 'Please enter your startup name',
+    'lbl-oneliner':     'One-liner about your startup',
+    'ph-oneliner':      'E.g. AI tool that helps small businesses automate invoicing',
+    'err-oneliner':     'Please fill in the one-liner',
+    'lbl-painpoints':   'Current challenges',
+    'ph-painpoints':    'Describe the main challenges your startup is currently facing…',
+    'err-painpoints':   'Please describe your current challenges',
+    'lbl-logo':         'Startup logo',
+    'logo-hint':        'Upload to Google Drive and paste the link — PNG or SVG, ideally on a white background, high resolution',
+    'err-logo':         'Please add a logo link',
+    'ph-logo':          'https://drive.google.com/…',
+    'logo-ok':          '✓ Logo is accessible',
+    'logo-private':     'File is not publicly accessible — set sharing to "Anyone with the link"',
+    'logo-warn':        'Could not verify accessibility — please check sharing settings',
+    'lbl-bootcamp-goal':'What do you want to take away from the bootcamp?',
+    'bootcamp-goal-hint':'Describe where mentoring can move you forward and where you expect mentors\' advice to be most valuable',
+    'err-bootcamp-goal':'Please fill in what you want to take away from the bootcamp',
+    'ph-bootcamp-goal': 'E.g. We don\'t know whether to go B2B or B2C — we\'ve tested both, but results are inconclusive. We\'re looking for a framework to decide with limited data.',
+    'lbl-pozicia1':     'Role in team', 'lbl-pozicia2': 'Role in team',
+    'err-pozicia1':     'Please enter your role', 'err-pozicia2': 'Please enter your role',
+    'ph-pozicia':       'e.g. CEO, CTO, Designer…',
+    'lbl-bio1':         'Bio', 'lbl-bio2': 'Bio',
+    'bio-hint1':        '3 – 5 sentences. Current role and company, previous experience — industry, types of companies, years of practice',
+    'bio-hint2':        '3 – 5 sentences. Current role and company, previous experience — industry, types of companies, years of practice',
+    'ph-bio':           'E.g. Roman works as Head of Marketing at Company XX. Previously his experience was mainly in sales at mid-sized companies.',
+    'err-bio1':         'Please fill in your bio', 'err-bio2': 'Please fill in your bio',
+    'lbl-foto1':        'Photo', 'lbl-foto2': 'Photo',
+    'foto-hint1':       'Portrait, high resolution — upload to Google Drive and paste the link',
+    'foto-hint2':       'Portrait, high resolution — upload to Google Drive and paste the link',
+    'ph-foto':          'https://drive.google.com/…',
+    'err-foto1':        'Please add a photo link', 'err-foto2': 'Please add a photo link',
+    'foto-ok':          '✓ Photo is accessible',
+    'foto-private':     'File is not publicly accessible — set sharing to "Anyone with the link"',
+    'foto-warn':        'Could not verify accessibility — please check sharing settings',
+    'lbl-startup-linkedin': 'Company LinkedIn',
+    'lbl-startup-web':  'Company website',
+    'lbl-linkedin1':    'LinkedIn', 'lbl-linkedin2': 'LinkedIn',
+    'divider-highlight': 'Company highlight of 2026',
+    'highlight-intro': 'Share your biggest company moment of the year — a situation that will stay with you.',
+    'lbl-highlight-foto':  'Photo of the moment',
+    'highlight-foto-hint': 'Upload to Google Drive and paste the link',
+    'lbl-highlight-popis': 'Description',
+    'highlight-popis-hint':'What happened and why it means a lot to you — 2 to 4 sentences',
+    'ph-highlight-popis':  'E.g. In May we signed our first enterprise contract. That was the moment we realised our product truly works for large customers too.',
+    'lbl-deck':         'Pitch deck link',
+    'ph-deck':        'https://drive.google.com/file/d/…',
+    'err-deck':       'Please enter a valid Google Drive link',
+    'fb-checking':    'Checking public accessibility of the link…',
+    'fb-ok':          '✓ Deck is publicly accessible — mentors and partners will be able to view it.',
+    'fb-err-title':   '⚠ Deck is not publicly accessible.',
+    'fb-err-body':    'For mentors and partners to open it, please:',
+    'err-steps':      [
+      'In Google Drive click <strong>Share</strong>',
+      'Select <strong>Anyone with the link → Viewer</strong>',
+      'Copy the updated link and paste it here',
+    ],
+    'fb-warn':        '⚠ Could not verify link accessibility. Please make sure sharing is set to "Anyone with the link" — otherwise mentors will not be able to access the deck.',
+    'submit-btn':     'Submit registration →',
+    'submit-note-txt':'are required',
+    'submit-wait':    'Verifying deck…',
+    'submit-sending': 'Submitting…',
+    'success-h2':     'Registration received!',
+    'success-p':      'Thank you. You will receive a confirmation e-mail shortly.<br>We look forward to seeing you at the bootcamp.',
+    'footer-text':    '· Startups Bootcamp 2026',
+  },
+};
+
+// ── Apply language ─────────────────────────────────────────────────────────
+let currentLang = 'SK';
+
+// Simple text id → element id map for innerText nodes
+const TEXT_IDS = [
+  'h1-accent','header-desc','m1-label','m2-label',
+  'lbl-meno1','lbl-meno2','lbl-priezvisko1','lbl-priezvisko2',
+  'lbl-tel1','lbl-tel2','lbl-email1','lbl-email2',
+  'lbl-tricko1','lbl-tricko2','lbl-alergie1','lbl-alergie2',
+  'err-meno1','err-meno2','err-priezvisko1','err-priezvisko2',
+  'err-tel1','err-tel2','err-email1','err-email2','err-tricko1','err-tricko2',
+  'vek-lbl1','vek-ano1','vek-nie1','vek-small1','vek-lbl2','vek-ano2','vek-nie2','vek-small2',
+  'lbl-izba','lbl-alldays',
+  'startup-card-label','startup-card-sublabel',
+  'lbl-logo','logo-hint','lbl-bootcamp-goal','bootcamp-goal-hint',
+  'lbl-pozicia1','lbl-pozicia2','err-pozicia1','err-pozicia2',
+  'lbl-bio1','lbl-bio2','bio-hint1','bio-hint2',
+  'lbl-foto1','lbl-foto2','foto-hint1','foto-hint2',
+  'err-foto1','err-foto2','err-bio1','err-bio2',
+  'lbl-startup-linkedin','lbl-startup-web',
+  'lbl-linkedin1','lbl-linkedin2',
+  'deck-sublabel','yc-link-text','guide-title',
+  'lbl-startup-name','err-startup-name',
+  'lbl-oneliner','err-oneliner','lbl-painpoints','err-painpoints',
+  'err-logo','err-bootcamp-goal',
+  'lbl-deck','err-deck',
+  'fb-checking','fb-ok','fb-warn',
+  'fb-err-title','fb-err-body',
+  'highlight-intro','lbl-highlight-foto','highlight-foto-hint',
+  'lbl-highlight-popis','highlight-popis-hint',
+  'footer-text',
+];
+
+// Elements using innerHTML (contain <strong> etc.)
+const HTML_IDS = ['deck-intro-p','success-p'];
+
+// Divider text nodes (dividers contain only text)
+const DIVIDER_MAP = {'divider-m2':'divider-m2','divider-highlight':'divider-highlight','divider-deck':'divider-deck'};
+
+function applyLang(lang) {
+  const t = T[lang];
+  currentLang = lang;
+
+  // h1 first text node
+  const h1 = document.getElementById('h1-main');
+  h1.childNodes[0].textContent = t['h1-main'] + '\n';
+
+  // Text elements
+  TEXT_IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && t[id] !== undefined) el.textContent = t[id];
+  });
+
+  // HTML elements
+  HTML_IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && t[id] !== undefined) el.innerHTML = t[id];
+  });
+
+  // Dividers
+  const dm2 = document.getElementById('divider-m2');
+  if (dm2) dm2.textContent = t['divider-m2'];
+  const dhl = document.getElementById('divider-highlight');
+  if (dhl) dhl.textContent = t['divider-highlight'];
+  const dd = document.getElementById('divider-deck');
+  if (dd) dd.textContent = t['divider-deck'];
+
+  // Placeholders
+  const phMap = {
+    'm1-meno':'ph-meno1','m1-priezvisko':'ph-priezvisko1',
+    'm1-tel':'ph-tel','m1-email':'ph-email1',
+    'm1-alergie':'ph-alergie',
+    'm1-foto-url':'ph-foto','m1-bio':'ph-bio',
+    'm2-meno':'ph-meno2','m2-priezvisko':'ph-priezvisko2',
+    'm2-tel':'ph-tel','m2-email':'ph-email2',
+    'm2-alergie':'ph-alergie',
+    'm2-foto-url':'ph-foto','m2-bio':'ph-bio',
+    'startup-name':'ph-startup-name',
+    'startup-oneliner':'ph-oneliner','pain-points':'ph-painpoints','deck-url':'ph-deck',
+    'logo-url':'ph-logo',
+    'm1-pozicia':'ph-pozicia','m2-pozicia':'ph-pozicia',
+    'bootcamp-goal':'ph-bootcamp-goal',
+    'highlight-popis':'ph-highlight-popis',
+  };
+  Object.entries(phMap).forEach(([inputId, key]) => {
+    const el = document.getElementById(inputId);
+    if (el && t[key]) el.placeholder = t[key];
+  });
+
+  // Select placeholders
+  ['opt-select1','opt-select2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = t['opt-select'];
+  });
+
+  // Guide steps list
+  const guideOl = document.getElementById('guide-steps-ol');
+  if (guideOl) guideOl.innerHTML = t['guide-steps'].map(s => `<li>${s}</li>`).join('');
+
+  // Error steps list
+  const errOl = document.getElementById('err-steps-ol');
+  if (errOl) errOl.innerHTML = t['err-steps'].map(s => `<li>${s}</li>`).join('');
+
+  // Submit button
+  const btn = document.getElementById('submit-btn');
+  if (!btn.disabled) btn.textContent = t['submit-btn'];
+
+  // Submit note
+  const note = document.getElementById('submit-note');
+  if (note) note.innerHTML = `Polia označené / Fields marked <span style="color:var(--accent)">*</span> ${t['submit-note-txt']}`;
+
+  // Success
+  const sh2 = document.getElementById('success-h2');
+  if (sh2) sh2.textContent = t['success-h2'];
+
+  // Toggle button states
+  document.getElementById('btn-sk').classList.toggle('active', lang === 'SK');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'EN');
+
+  // Persist
+  try { localStorage.setItem('sask-lang', lang); } catch {}
+}
+
+// ── Lang toggle events ─────────────────────────────────────────────────────
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+});
+
+// Init from localStorage or default SK
+(function init() {
+  let saved = 'SK';
+  try { saved = localStorage.getItem('sask-lang') || 'SK'; } catch {}
+  applyLang(saved === 'EN' ? 'EN' : 'SK');
+})();
+
+// ── Drive URL utilities ────────────────────────────────────────────────────
+function isDriveUrl(url) {
+  try {
+    const u = new URL(url);
+    return u.hostname === 'drive.google.com' || u.hostname === 'docs.google.com';
+  } catch { return false; }
+}
+function extractDriveId(url) {
+  const patterns = [
+    /\/file\/d\/([a-zA-Z0-9_-]{10,})/,
+    /\/presentation\/d\/([a-zA-Z0-9_-]{10,})/,
+    /\/document\/d\/([a-zA-Z0-9_-]{10,})/,
+    /\/spreadsheets\/d\/([a-zA-Z0-9_-]{10,})/,
+    /\/folders\/([a-zA-Z0-9_-]{10,})/,
+    /[?&]id=([a-zA-Z0-9_-]{10,})/,
+  ];
+  for (const p of patterns) { const m = url.match(p); if (m) return m[1]; }
+  return null;
+}
+function getUrlType(url) {
+  if (url.includes('/presentation/')) return 'slides';
+  if (url.includes('/document/'))     return 'doc';
+  return 'file';
+}
+function checkDriveAccess(fileId, type) {
+  return new Promise(resolve => {
+    const start = Date.now();
+    const probeUrl = type === 'slides'
+      ? `https://docs.google.com/presentation/d/${fileId}/export/png`
+      : `https://drive.google.com/thumbnail?id=${fileId}&sz=w120`;
+    const img = new Image();
+    const cleanup = () => { img.onload = img.onerror = null; img.src = ''; };
+    const timer = setTimeout(() => { cleanup(); resolve('timeout'); }, 9000);
+    img.onload = () => { clearTimeout(timer); cleanup(); resolve('public'); };
+    img.onerror = () => {
+      clearTimeout(timer); cleanup();
+      resolve(Date.now() - start < 80 ? 'unverifiable' : 'private');
+    };
+    img.src = probeUrl;
+  });
+}
+
+// ── Feedback UI ────────────────────────────────────────────────────────────
+const feedbackIds = ['fb-checking','fb-ok','fb-err','fb-warn'];
+function showFeedback(id) {
+  feedbackIds.forEach(f => document.getElementById(f).classList.toggle('visible', f === id));
+}
+function hideFeedback() {
+  feedbackIds.forEach(f => document.getElementById(f).classList.remove('visible'));
+}
+function setIcon(state) {
+  const icon = document.getElementById('link-icon');
+  icon.className = 'link-status-icon';
+  icon.style.color = '';
+  const states = {
+    checking: ['↻','visible spinning'],
+    ok:       ['✓','visible'],
+    err:      ['⚠','visible'],
+    warn:     ['?','visible'],
+  };
+  if (states[state]) {
+    icon.textContent = states[state][0];
+    states[state][1].split(' ').forEach(c => icon.classList.add(c));
+    if (state === 'ok')   icon.style.color = 'var(--ok)';
+    if (state === 'err')  icon.style.color = 'var(--err)';
+    if (state === 'warn') icon.style.color = 'var(--warn)';
+  } else {
+    icon.textContent = '';
+  }
+}
+
+// ── Inline Drive link check with status tracking ──────────────────────────
+const inlineStatus = { m1foto: 'idle', m2foto: 'idle', hlFoto: 'idle' };
+
+async function verifyInlineLink(inputId, iconId, fbId, okKey, privateKey, warnKey, statusKey, fieldId) {
+  const url = (document.getElementById(inputId)?.value || '').trim();
+  const icon = document.getElementById(iconId);
+  const fb   = document.getElementById(fbId);
+  const t    = T[currentLang];
+  const reset = () => {
+    icon.textContent = ''; icon.className = 'link-status-icon'; icon.style.color = '';
+    fb.hidden = true; fb.className = 'field-hint-small';
+    if (statusKey) inlineStatus[statusKey] = 'idle';
+  };
+  if (!url) { reset(); return; }
+  if (!isDriveUrl(url)) { reset(); return; }
+  const fileId = extractDriveId(url);
+  if (!fileId) {
+    icon.textContent = '?'; icon.className = 'link-status-icon visible'; icon.style.color = 'var(--warn)';
+    fb.textContent = t[warnKey]; fb.className = 'field-hint-small hint-warn'; fb.hidden = false;
+    if (statusKey) inlineStatus[statusKey] = 'warn';
+    return;
+  }
+  icon.textContent = '↻'; icon.className = 'link-status-icon visible spinning'; icon.style.color = '';
+  fb.hidden = true;
+  if (statusKey) inlineStatus[statusKey] = 'checking';
+  const result = await checkDriveAccess(fileId, getUrlType(url));
+  if (result === 'public') {
+    icon.textContent = '✓'; icon.className = 'link-status-icon visible'; icon.style.color = 'var(--ok)';
+    fb.hidden = true;
+    if (statusKey) inlineStatus[statusKey] = 'ok';
+    if (fieldId) document.getElementById(fieldId)?.classList.remove('has-error');
+  } else if (result === 'private') {
+    icon.textContent = '⚠'; icon.className = 'link-status-icon visible'; icon.style.color = 'var(--err)';
+    fb.textContent = t[privateKey]; fb.className = 'field-hint-small hint-err'; fb.hidden = false;
+    if (statusKey) inlineStatus[statusKey] = 'err';
+  } else {
+    icon.textContent = '?'; icon.className = 'link-status-icon visible'; icon.style.color = 'var(--warn)';
+    fb.textContent = t[warnKey]; fb.className = 'field-hint-small hint-warn'; fb.hidden = false;
+    if (statusKey) inlineStatus[statusKey] = 'warn';
+  }
+}
+
+const inlineLinkTimers = {};
+function debounceInline(id, inputId, iconId, fbId, okKey, privKey, warnKey, statusKey, fieldId) {
+  clearTimeout(inlineLinkTimers[id]);
+  inlineLinkTimers[id] = setTimeout(() => verifyInlineLink(inputId, iconId, fbId, okKey, privKey, warnKey, statusKey, fieldId), 700);
+}
+
+document.getElementById('m1-foto-url')?.addEventListener('input', e => {
+  inlineStatus.m1foto = 'idle';
+  document.getElementById('f-m1-foto')?.classList.remove('has-error');
+  debounceInline('m1f','m1-foto-url','foto1-icon','foto1-fb','foto-ok','foto-private','foto-warn','m1foto','f-m1-foto');
+});
+document.getElementById('m2-foto-url')?.addEventListener('input', e => {
+  inlineStatus.m2foto = 'idle';
+  document.getElementById('f-m2-foto')?.classList.remove('has-error');
+  debounceInline('m2f','m2-foto-url','foto2-icon','foto2-fb','foto-ok','foto-private','foto-warn','m2foto','f-m2-foto');
+});
+document.getElementById('highlight-foto-url')?.addEventListener('input', e => {
+  inlineStatus.hlFoto = 'idle';
+  debounceInline('hlf','highlight-foto-url','highlight-foto-icon','highlight-foto-fb','foto-ok','foto-private','foto-warn','hlFoto','f-highlight-foto');
+});
+
+// ── Logo link check with status tracking ──────────────────────────────────
+let logoStatus = 'idle';
+let logoCheckTimer = null;
+
+async function verifyLogoLink(url) {
+  const icon = document.getElementById('logo-icon');
+  const fb   = document.getElementById('logo-fb');
+  const t    = T[currentLang];
+  const reset = () => {
+    icon.textContent = ''; icon.className = 'link-status-icon'; icon.style.color = '';
+    fb.hidden = true; fb.className = 'field-hint-small';
+    logoStatus = 'idle';
+  };
+  if (!url) { reset(); return; }
+  if (!isDriveUrl(url)) { reset(); return; }
+  const fileId = extractDriveId(url);
+  if (!fileId) {
+    icon.textContent = '?'; icon.className = 'link-status-icon visible'; icon.style.color = 'var(--warn)';
+    fb.textContent = t['logo-warn']; fb.className = 'field-hint-small hint-warn'; fb.hidden = false;
+    logoStatus = 'warn'; return;
+  }
+  icon.textContent = '↻'; icon.className = 'link-status-icon visible spinning'; icon.style.color = '';
+  fb.hidden = true; logoStatus = 'checking';
+  const result = await checkDriveAccess(fileId, getUrlType(url));
+  if (result === 'public') {
+    icon.textContent = '✓'; icon.className = 'link-status-icon visible'; icon.style.color = 'var(--ok)';
+    fb.hidden = true; logoStatus = 'ok';
+    document.getElementById('f-logo')?.classList.remove('has-error');
+  } else if (result === 'private') {
+    icon.textContent = '⚠'; icon.className = 'link-status-icon visible'; icon.style.color = 'var(--err)';
+    fb.textContent = t['logo-private']; fb.className = 'field-hint-small hint-err'; fb.hidden = false;
+    logoStatus = 'err';
+  } else {
+    icon.textContent = '?'; icon.className = 'link-status-icon visible'; icon.style.color = 'var(--warn)';
+    fb.textContent = t['logo-warn']; fb.className = 'field-hint-small hint-warn'; fb.hidden = false;
+    logoStatus = 'warn';
+  }
+}
+
+document.getElementById('logo-url')?.addEventListener('input', e => {
+  clearTimeout(logoCheckTimer);
+  const url = e.target.value.trim();
+  document.getElementById('f-logo')?.classList.remove('has-error');
+  logoStatus = 'idle';
+  if (url.length > 10) logoCheckTimer = setTimeout(() => verifyLogoLink(url), 600);
+  else {
+    const icon = document.getElementById('logo-icon');
+    const fb   = document.getElementById('logo-fb');
+    icon.textContent = ''; icon.className = 'link-status-icon'; fb.hidden = true;
+  }
+});
+
+// ── Deck verification ──────────────────────────────────────────────────────
+let deckCheckTimer = null;
+let deckStatus = 'idle';
+
+async function verifyDeckLink(url) {
+  const t = T[currentLang];
+  if (!url.trim()) { deckStatus = 'idle'; hideFeedback(); setIcon(''); return; }
+  if (!isDriveUrl(url)) { deckStatus = 'invalid-url'; hideFeedback(); setIcon('err'); return; }
+  const fileId = extractDriveId(url);
+  if (!fileId) { deckStatus = 'warn'; showFeedback('fb-warn'); setIcon('warn'); return; }
+  document.getElementById('f-deck').classList.remove('has-error');
+  deckStatus = 'checking';
+  setIcon('checking');
+  showFeedback('fb-checking');
+  const result = await checkDriveAccess(fileId, getUrlType(url));
+  if (result === 'public') {
+    deckStatus = 'ok'; setIcon('ok'); showFeedback('fb-ok');
+  } else if (result === 'private') {
+    deckStatus = 'err'; setIcon('err'); showFeedback('fb-err');
+  } else {
+    deckStatus = 'warn'; setIcon('warn'); showFeedback('fb-warn');
+  }
+}
+document.getElementById('deck-url').addEventListener('input', e => {
+  clearTimeout(deckCheckTimer);
+  const url = e.target.value.trim();
+  document.getElementById('f-deck').classList.remove('has-error');
+  hideFeedback(); setIcon(''); deckStatus = 'idle';
+  if (url.length > 10) deckCheckTimer = setTimeout(() => verifyDeckLink(url), 600);
+});
+
+// ── Validation ─────────────────────────────────────────────────────────────
+const requiredFields = [
+  ['m1-meno','f-m1-meno','err-meno1'],['m1-priezvisko','f-m1-priezvisko','err-priezvisko1'],
+  ['m1-tel','f-m1-tel','err-tel1'],   ['m1-email','f-m1-email','err-email1'],
+  ['m1-tricko','f-m1-tricko','err-tricko1'],
+  ['m1-pozicia','f-m1-pozicia','err-pozicia1'],
+  ['m1-foto-url','f-m1-foto','err-foto1'],
+  ['m1-bio','f-m1-bio','err-bio1'],
+  ['m2-meno','f-m2-meno','err-meno2'],['m2-priezvisko','f-m2-priezvisko','err-priezvisko2'],
+  ['m2-tel','f-m2-tel','err-tel2'],   ['m2-email','f-m2-email','err-email2'],
+  ['m2-tricko','f-m2-tricko','err-tricko2'],
+  ['m2-pozicia','f-m2-pozicia','err-pozicia2'],
+  ['m2-foto-url','f-m2-foto','err-foto2'],
+  ['m2-bio','f-m2-bio','err-bio2'],
+];
+const checkboxIds = ['izba-consent','all-days-consent'];
+const vekRadios = ['m1_vek','m2_vek'];
+requiredFields.push(
+  ['startup-name','f-startup-name','err-startup-name'],
+  ['startup-oneliner','f-oneliner','err-oneliner'],
+  ['logo-url','f-logo','err-logo'],
+  ['pain-points','f-painpoints','err-painpoints'],
+  ['bootcamp-goal','f-bootcamp-goal','err-bootcamp-goal'],
+);
+
+function validateForm() {
+  let ok = true;
+  requiredFields.forEach(([inputId, fieldId]) => {
+    const el = document.getElementById(inputId);
+    const field = document.getElementById(fieldId);
+    const empty = !el.value.trim();
+    const emailFail = el.type === 'email' && el.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim());
+    field.classList.toggle('has-error', empty || emailFail);
+    if (empty || emailFail) ok = false;
+  });
+  checkboxIds.forEach(id => {
+    const el = document.getElementById(id);
+    const wrap = el.closest('.checkbox-field');
+    const bad = !el.checked;
+    wrap.style.borderColor = bad ? 'var(--err)' : '';
+    wrap.style.boxShadow   = bad ? '0 0 0 3px rgba(239,68,68,.1)' : '';
+    if (bad) ok = false;
+  });
+  vekRadios.forEach(name => {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    const group = document.querySelector(`input[name="${name}"]`)?.closest('.field');
+    const bad = !checked;
+    if (group) group.style.outline = bad ? '2px solid var(--err)' : '';
+    if (bad) ok = false;
+  });
+  // Logo access check
+  const logoInput = document.getElementById('logo-url');
+  const logoField = document.getElementById('f-logo');
+  if (logoInput?.value.trim() && logoStatus === 'err') {
+    logoField?.classList.add('has-error');
+    ok = false;
+  }
+
+  // Foto access checks
+  const foto1Input = document.getElementById('m1-foto-url');
+  const foto1Field = document.getElementById('f-m1-foto');
+  if (foto1Input?.value.trim() && inlineStatus.m1foto === 'err') {
+    foto1Field?.classList.add('has-error'); ok = false;
+  }
+  const foto2Input = document.getElementById('m2-foto-url');
+  const foto2Field = document.getElementById('f-m2-foto');
+  if (foto2Input?.value.trim() && inlineStatus.m2foto === 'err') {
+    foto2Field?.classList.add('has-error'); ok = false;
+  }
+
+  const deckInput = document.getElementById('deck-url');
+  const deckField = document.getElementById('f-deck');
+  const deckBad = !deckInput.value.trim() || !isDriveUrl(deckInput.value.trim());
+  if (deckBad) { deckField.classList.add('has-error'); ok = false; }
+  else if (deckStatus === 'err') { deckField.classList.add('has-error'); showFeedback('fb-err'); ok = false; }
+  else deckField.classList.remove('has-error');
+  return ok;
+}
+
+// Live clear
+requiredFields.forEach(([inputId, fieldId]) => {
+  document.getElementById(inputId).addEventListener('input', () =>
+    document.getElementById(fieldId).classList.remove('has-error'));
+});
+checkboxIds.forEach(id => {
+  document.getElementById(id).addEventListener('change', () => {
+    const wrap = document.getElementById(id).closest('.checkbox-field');
+    wrap.style.borderColor = ''; wrap.style.boxShadow = '';
+  });
+});
+
+// ── Submit ─────────────────────────────────────────────────────────────────
+document.getElementById('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const t = T[currentLang];
+  const btn = document.getElementById('submit-btn');
+  if (deckStatus === 'checking' || logoStatus === 'checking' || inlineStatus.m1foto === 'checking' || inlineStatus.m2foto === 'checking' || inlineStatus.hlFoto === 'checking') {
+    btn.textContent = t['submit-wait']; btn.disabled = true;
+    await new Promise(r => setTimeout(r, 2500));
+    btn.disabled = false; btn.textContent = t['submit-btn'];
+  }
+  if (!validateForm()) {
+    document.querySelector('.has-error input, .has-error select')?.focus();
+    return;
+  }
+  btn.disabled = true; btn.textContent = t['submit-sending'];
+
+  const val = id => (document.getElementById(id)?.value || '').trim();
+  const checked = id => document.getElementById(id)?.checked ? 'Áno' : 'Nie';
+  const radio = name => document.querySelector(`input[name="${name}"]:checked`)?.value || '';
+
+  const payload = {
+    m1_meno:        val('m1-meno'),
+    m1_priezvisko:  val('m1-priezvisko'),
+    m1_tel:         val('m1-tel'),
+    m1_email:       val('m1-email'),
+    m1_tricko:      val('m1-tricko'),
+    m1_alergie:     val('m1-alergie'),
+    m1_vek:         radio('m1_vek'),
+    m1_pozicia:     val('m1-pozicia'),
+    m1_bio:         val('m1-bio'),
+    m1_foto_url:    val('m1-foto-url'),
+    m1_linkedin:    val('m1-linkedin'),
+    m2_meno:        val('m2-meno'),
+    m2_priezvisko:  val('m2-priezvisko'),
+    m2_tel:         val('m2-tel'),
+    m2_email:       val('m2-email'),
+    m2_tricko:      val('m2-tricko'),
+    m2_alergie:     val('m2-alergie'),
+    m2_vek:         radio('m2_vek'),
+    m2_pozicia:     val('m2-pozicia'),
+    m2_bio:         val('m2-bio'),
+    m2_foto_url:    val('m2-foto-url'),
+    m2_linkedin:    val('m2-linkedin'),
+    izba_consent:   checked('izba-consent'),
+    all_days:       checked('all-days-consent'),
+    startup_name:   val('startup-name'),
+    oneliner:       val('startup-oneliner'),
+    logo_url:       val('logo-url'),
+    startup_linkedin: val('startup-linkedin'),
+    startup_web:    val('startup-web'),
+    pain_points:    val('pain-points'),
+    bootcamp_goal:  val('bootcamp-goal'),
+    deck_url:       val('deck-url'),
+    highlight_foto: val('highlight-foto-url'),
+    highlight_popis: val('highlight-popis'),
+  };
+
+  const AT_TOKEN  = 'pathRhNK88fkrhCgw.7bbb5c3e2f455ee7fdf7f18b160409f918f723a6ab443d979f58bdc4f18cd7ed';
+  const AT_BASE   = 'appXBMoZQ4s6cDoEv';
+  const AT_TABLE  = 'tblHZjvlLgn7aQ9B7';
+  const AT_URL    = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}`;
+
+  const fields = {
+    'Startup':            payload.startup_name,
+    'One-liner':          payload.oneliner,
+    'Logo URL':           payload.logo_url,
+    'LinkedIn firmy':     payload.startup_linkedin,
+    'Web firmy':          payload.startup_web,
+    'Pain points':        payload.pain_points,
+    'Čo chcú z bootcampu': payload.bootcamp_goal,
+    'M1 Meno':            payload.m1_meno,
+    'M1 Priezvisko':      payload.m1_priezvisko,
+    'M1 Pozícia':         payload.m1_pozicia,
+    'M1 Bio':             payload.m1_bio,
+    'M1 Foto':            payload.m1_foto_url,
+    'M1 LinkedIn':        payload.m1_linkedin,
+    'M1 Tel':             payload.m1_tel,
+    'M1 Email':           payload.m1_email,
+    'M1 Tričko':          payload.m1_tricko,
+    'M1 Alergie':         payload.m1_alergie,
+    'M1 18+':             payload.m1_vek === 'ano',
+    'M2 Meno':            payload.m2_meno,
+    'M2 Priezvisko':      payload.m2_priezvisko,
+    'M2 Pozícia':         payload.m2_pozicia,
+    'M2 Bio':             payload.m2_bio,
+    'M2 Foto':            payload.m2_foto_url,
+    'M2 LinkedIn':        payload.m2_linkedin,
+    'M2 Tel':             payload.m2_tel,
+    'M2 Email':           payload.m2_email,
+    'M2 Tričko':          payload.m2_tricko,
+    'M2 Alergie':         payload.m2_alergie,
+    'M2 18+':             payload.m2_vek === 'ano',
+    'Izba':               payload.izba_consent === 'Áno',
+    'Všetky dni':         payload.all_days === 'Áno',
+    'Deck URL':           payload.deck_url,
+    'Highlight Foto':     payload.highlight_foto   || undefined,
+    'Highlight Popis':    payload.highlight_popis  || undefined,
+  };
+
+  try {
+    const res = await fetch(AT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${AT_TOKEN}`,
+      },
+      body: JSON.stringify({ records: [{ fields }] }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      console.error('Airtable error:', err);
+      btn.disabled = false; btn.textContent = t['submit-btn'];
+      alert(currentLang === 'SK'
+        ? 'Nastala chyba pri odosielaní. Skúste znova alebo nás kontaktujte.'
+        : 'Submission failed. Please try again or contact us.');
+      return;
+    }
+  } catch (err) {
+    console.error('Submit error:', err);
+    btn.disabled = false; btn.textContent = t['submit-btn'];
+    alert(currentLang === 'SK'
+      ? 'Nastala chyba pri odosielaní. Skúste znova alebo nás kontaktujte.'
+      : 'Submission failed. Please try again or contact us.');
+    return;
+  }
+
+  document.getElementById('form').hidden = true;
+  const s = document.getElementById('success');
+  s.classList.add('visible');
+  s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+</script>
