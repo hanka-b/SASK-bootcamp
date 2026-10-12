@@ -221,6 +221,9 @@
   .field-hint-small.hint-warn { color: var(--warn); background: var(--warn-bg); }
 
   .field { display: flex; flex-direction: column; gap: 5px; }
+  .char-counter { font-size: 11px; color: var(--fg-muted); text-align: right; transition: color .2s; }
+  .char-counter.near-limit { color: var(--warn); }
+  .char-counter.at-limit   { color: var(--err); font-weight: 600; }
 
   label { font-size: 13px; font-weight: 500; color: var(--fg); letter-spacing: .01em; }
   .required-star { color: var(--accent); margin-left: 2px; }
@@ -539,8 +542,15 @@
         </div>
         <div class="field" id="f-oneliner">
           <label for="startup-oneliner"><span id="lbl-oneliner">One-liner o vašom startupe</span> <span class="required-star">*</span></label>
-          <input type="text" id="startup-oneliner" name="startup_oneliner" placeholder="Napr. AI nástroj, ktorý pomáha malým firmám automatizovať fakturáciu" maxlength="160">
+          <input type="text" id="startup-oneliner" name="startup_oneliner" placeholder="Napr. AI nástroj, ktorý pomáha malým firmám automatizovať fakturáciu" maxlength="100">
+          <span class="char-counter" id="cnt-oneliner">0 / 100</span>
           <span class="field-error" id="err-oneliner">Vyplňte one-liner</span>
+        </div>
+        <div class="field" id="f-startup-popis">
+          <label for="startup-popis"><span id="lbl-startup-popis">Dlhší popis startupu</span></label>
+          <small style="color:var(--fg-muted);font-size:12px;margin-bottom:2px;display:block" id="startup-popis-hint">Čo robíte, pre koho a aká je vaša vízia — max 500 znakov</small>
+          <textarea id="startup-popis" name="startup_popis" rows="4" placeholder="Opíšte váš startup podrobnejšie…" maxlength="500"></textarea>
+          <span class="char-counter" id="cnt-startup-popis">0 / 500</span>
         </div>
         <div class="field-row">
           <div class="field">
@@ -933,6 +943,9 @@ const T = {
     'lbl-oneliner':     'One-liner o vašom startupe',
     'ph-oneliner':      'Napr. AI nástroj, ktorý pomáha malým firmám automatizovať fakturáciu',
     'err-oneliner':     'Vyplňte one-liner',
+    'lbl-startup-popis': 'Dlhší popis startupu',
+    'startup-popis-hint': 'Čo robíte, pre koho a aká je vaša vízia — max 500 znakov',
+    'ph-startup-popis': 'Opíšte váš startup podrobnejšie…',
     'lbl-painpoints':   'Aktuálne výzvy',
     'ph-painpoints':    'Opíšte hlavné výzvy, s ktorými sa váš startup aktuálne stretáva…',
     'err-painpoints':   'Opíšte aktuálne výzvy',
@@ -1048,6 +1061,9 @@ const T = {
     'lbl-oneliner':     'One-liner about your startup',
     'ph-oneliner':      'E.g. AI tool that helps small businesses automate invoicing',
     'err-oneliner':     'Please fill in the one-liner',
+    'lbl-startup-popis': 'Startup description',
+    'startup-popis-hint': 'What you do, for whom, and your vision — max 500 characters',
+    'ph-startup-popis': 'Describe your startup in more detail…',
     'lbl-painpoints':   'Current challenges',
     'ph-painpoints':    'Describe the main challenges your startup is currently facing…',
     'err-painpoints':   'Please describe your current challenges',
@@ -1134,7 +1150,7 @@ const TEXT_IDS = [
   'lbl-linkedin1','lbl-linkedin2',
   'deck-sublabel','yc-link-text','guide-title',
   'lbl-startup-name','err-startup-name',
-  'lbl-oneliner','err-oneliner','lbl-painpoints','err-painpoints',
+  'lbl-oneliner','err-oneliner','lbl-startup-popis','startup-popis-hint','lbl-painpoints','err-painpoints',
   'err-logo','err-bootcamp-goal',
   'lbl-deck','err-deck',
   'fb-checking','fb-ok','fb-warn',
@@ -1189,7 +1205,7 @@ function applyLang(lang) {
     'm2-alergie':'ph-alergie',
     'm2-foto-url':'ph-foto','m2-bio':'ph-bio',
     'startup-name':'ph-startup-name',
-    'startup-oneliner':'ph-oneliner','pain-points':'ph-painpoints','deck-url':'ph-deck',
+    'startup-oneliner':'ph-oneliner','startup-popis':'ph-startup-popis','pain-points':'ph-painpoints','deck-url':'ph-deck',
     'logo-url':'ph-logo',
     'm1-pozicia':'ph-pozicia','m2-pozicia':'ph-pozicia',
     'bootcamp-goal':'ph-bootcamp-goal',
@@ -1244,6 +1260,27 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
   let saved = 'SK';
   try { saved = localStorage.getItem('sask-lang') || 'SK'; } catch {}
   applyLang(saved === 'EN' ? 'EN' : 'SK');
+})();
+
+// ── Char counters ──────────────────────────────────────────────────────────────────────
+(function initCharCounters() {
+  const counters = [
+    { inputId: 'startup-oneliner', counterId: 'cnt-oneliner', max: 100 },
+    { inputId: 'startup-popis',    counterId: 'cnt-startup-popis', max: 500 },
+  ];
+  counters.forEach(({ inputId, counterId, max }) => {
+    const input = document.getElementById(inputId);
+    const counter = document.getElementById(counterId);
+    if (!input || !counter) return;
+    const update = () => {
+      const n = input.value.length;
+      counter.textContent = n + ' / ' + max;
+      counter.classList.toggle('near-limit', n > max * 0.85 && n < max);
+      counter.classList.toggle('at-limit', n >= max);
+    };
+    input.addEventListener('input', update);
+    update();
+  });
 })();
 
 // ── Drive URL utilities ────────────────────────────────────────────────────
@@ -1601,6 +1638,7 @@ document.getElementById('form').addEventListener('submit', async e => {
     all_days:       checked('all-days-consent'),
     startup_name:   val('startup-name'),
     oneliner:       val('startup-oneliner'),
+    startup_popis:  val('startup-popis'),
     logo_url:       val('logo-url'),
     startup_linkedin: val('startup-linkedin'),
     startup_web:    val('startup-web'),
@@ -1619,6 +1657,7 @@ document.getElementById('form').addEventListener('submit', async e => {
   const fields = {
     'Startup':            payload.startup_name,
     'One-liner':          payload.oneliner,
+    'Popis startupu':     payload.startup_popis || undefined,
     'Logo URL':           payload.logo_url,
     'LinkedIn firmy':     payload.startup_linkedin,
     'Web firmy':          payload.startup_web,
