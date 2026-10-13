@@ -1676,6 +1676,11 @@ document.getElementById('form').addEventListener('submit', async e => {
     'Highlight Popis':    payload.highlight_popis || undefined,
   };
 
+  // Strip empty fields
+  Object.keys(fields).forEach(k => {
+    if (fields[k] === undefined || fields[k] === '' || fields[k] === null) delete fields[k];
+  });
+
   try {
     const res = await fetch(AT_URL, {
       method: 'POST',
@@ -1689,9 +1694,8 @@ document.getElementById('form').addEventListener('submit', async e => {
       const err = await res.json().catch(() => ({}));
       console.error('Airtable error:', err);
       btn.disabled = false; btn.textContent = t['submit-btn'];
-      alert(currentLang === 'SK'
-        ? 'Nastala chyba pri odosielaní. Skúste znova alebo nás kontaktujte.'
-        : 'Submission failed. Please try again or contact us.');
+      const errMsg = err?.error?.message || err?.error?.type || JSON.stringify(err).substring(0, 120);
+      alert((currentLang === 'SK' ? 'Nastala chyba pri odosielaní. Skúste znova alebo nás kontaktujte.\n\nDetail: ' : 'Submission failed. Please try again or contact us.\n\nDetail: ') + errMsg);
       return;
     }
   } catch (err) {
