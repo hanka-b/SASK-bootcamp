@@ -1487,7 +1487,7 @@ async function verifyDeckLink(url) {
   if (result === 'public') {
     deckStatus = 'ok'; setIcon('ok'); showFeedback('fb-ok');
   } else if (result === 'private') {
-    deckStatus = 'err'; setIcon('err'); showFeedback('fb-err');
+    deckStatus = 'warn'; setIcon('warn'); showFeedback('fb-err');
   } else {
     deckStatus = 'warn'; setIcon('warn'); showFeedback('fb-warn');
   }
@@ -1553,28 +1553,12 @@ function validateForm() {
   // Logo access check
   const logoInput = document.getElementById('logo-url');
   const logoField = document.getElementById('f-logo');
-  if (logoInput?.value.trim() && logoStatus === 'err') {
-    logoField?.classList.add('has-error');
-    ok = false;
-  }
-
-  // Foto access checks
-  const foto1Input = document.getElementById('m1-foto-url');
-  const foto1Field = document.getElementById('f-m1-foto');
-  if (foto1Input?.value.trim() && inlineStatus.m1foto === 'err') {
-    foto1Field?.classList.add('has-error'); ok = false;
-  }
-  const foto2Input = document.getElementById('m2-foto-url');
-  const foto2Field = document.getElementById('f-m2-foto');
-  if (foto2Input?.value.trim() && inlineStatus.m2foto === 'err') {
-    foto2Field?.classList.add('has-error'); ok = false;
-  }
+  // (access errors are warnings only, not submit blockers)
 
   const deckInput = document.getElementById('deck-url');
   const deckField = document.getElementById('f-deck');
   const deckBad = !deckInput.value.trim() || !isDriveUrl(deckInput.value.trim());
   if (deckBad) { deckField.classList.add('has-error'); ok = false; }
-  else if (deckStatus === 'err') { deckField.classList.add('has-error'); showFeedback('fb-err'); ok = false; }
   else deckField.classList.remove('has-error');
   return ok;
 }
