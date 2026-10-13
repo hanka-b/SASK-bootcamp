@@ -1,4 +1,5 @@
 <title>SASK Bootcamp Registration</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
 
 <style>
@@ -1706,6 +1707,17 @@ document.getElementById('form').addEventListener('submit', async e => {
       : 'Submission failed. Please try again or contact us.');
     return;
   }
+
+
+  // Send confirmation email via EmailJS
+  try {
+    emailjs.init('cA0lTXv7DjrZpRraI');
+    emailjs.send('service_n49vlvd', 'template_q145utn', {
+      m1_meno: payload.m1_meno,
+      startup_name: payload.startup_name,
+      m1_email: payload.m1_email
+    });
+  } catch(e) { console.warn('EmailJS error:', e); }
 
   document.getElementById('form').hidden = true;
   const s = document.getElementById('success');
