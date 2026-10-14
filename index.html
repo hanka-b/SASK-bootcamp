@@ -1638,6 +1638,7 @@ document.getElementById('form').addEventListener('submit', async e => {
   const AT_BASE   = 'appXBMoZQ4s6cDoEv';
   const AT_TABLE  = 'tblHZjvlLgn7aQ9B7';
   const AT_URL    = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}`;
+  const SHEETS_URL = ''; // optional: Google Apps Script Web App URL
 
   const fields = {
     'Startup':            payload.startup_name,
@@ -1682,34 +1683,42 @@ document.getElementById('form').addEventListener('submit', async e => {
     if (fields[k] === undefined || fields[k] === '' || fields[k] === null) delete fields[k];
   });
 
+  // ── 1. Pre-save to localStorage ─────────────────────────────────────────
+  try { localStorage.setItem('sask-last-submission', JSON.stringify({ts: new Date().toISOString(), payload})); } catch(e) {}
+
+  // ── 2. Backup organizer email + Sheets (fire-and-forget, BEFORE Airtable) ──
+  emailjs.init('cA0lTXv7DjrZpRraI');
+  emailjs.send('service_n49vlvd', 'template_q145utn', {
+    m1_meno: payload.m1_meno, startup_name: payload.startup_name, m1_email: 'hanka@sask.sk'
+  }).catch(e => console.warn('Backup email failed:', e));
+  if (SHEETS_URL) {
+    fetch(SHEETS_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }).catch(()=>{});
+  }
+
+  // ── 3. Airtable with 1 automatic retry ────────────────────────────────────
+  const airtableBody = JSON.stringify({ records: [{ fields }] });
+  const airtableHeaders = { 'Content-Type':'application/json', 'Authorization':`Bearer ${AT_TOKEN}` };
+  async function submitToAirtable() {
+    const res = await fetch(AT_URL, { method:'POST', headers:airtableHeaders, body:airtableBody });
+    if (!res.ok) { const e = await res.json().catch(()=>({})); throw e; }
+    return res;
+  }
   try {
-    const res = await fetch(AT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${AT_TOKEN}`,
-      },
-      body: JSON.stringify({ records: [{ fields }] }),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      console.error('Airtable error:', err);
-      btn.disabled = false; btn.textContent = t['submit-btn'];
-      const errMsg = err?.error?.message || err?.error?.type || JSON.stringify(err).substring(0, 120);
-      alert((currentLang === 'SK' ? 'Nastala chyba pri odosielaní. Skúste znova alebo nás kontaktujte.\n\nDetail: ' : 'Submission failed. Please try again or contact us.\n\nDetail: ') + errMsg);
-      return;
+    try { await submitToAirtable(); }
+    catch (firstErr) {
+      console.warn('Airtable retry in 2s…', firstErr);
+      await new Promise(r => setTimeout(r, 2000));
+      await submitToAirtable();
     }
   } catch (err) {
-    console.error('Submit error:', err);
+    console.error('Airtable failed after retry:', err);
     btn.disabled = false; btn.textContent = t['submit-btn'];
-    alert(currentLang === 'SK'
-      ? 'Nastala chyba pri odosielaní. Skúste znova alebo nás kontaktujte.'
-      : 'Submission failed. Please try again or contact us.');
+    const errMsg = err?.error?.message || err?.error?.type || JSON.stringify(err).substring(0,120);
+    alert((currentLang==='SK' ? 'Nastala chyba pri odosielaní. Skúste znova alebo nás kontaktujte.\n\nDetail: ' : 'Submission failed. Please try again or contact us.\n\nDetail: ') + errMsg);
     return;
   }
 
-
-  // Send confirmation email via EmailJS
+  // ── 4. Confirmation email to participant via EmailJS
   try {
     emailjs.init('cA0lTXv7DjrZpRraI');
     emailjs.send('service_n49vlvd', 'template_q145utn', {
