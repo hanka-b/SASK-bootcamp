@@ -551,8 +551,9 @@
           <span class="field-error" id="err-oneliner">Vyplňte one-liner</span>
         </div>
         <div class="field" id="f-startup-popis">
-          <label for="startup-popis"><span id="lbl-startup-popis">Dlhší popis startupu</span></label>
+          <label for="startup-popis"><span id="lbl-startup-popis">Dlhší popis startupu</span><span class="required-star">*</span></label>
           <small style="color:var(--fg-muted);font-size:12px;margin-bottom:2px;display:block" id="startup-popis-hint">Čo robíte, pre koho a aká je vaša vízia — max 500 znakov</small>
+          <span class="field-error" id="err-startup-popis">Toto pole je povinné / Required</span>
           <textarea id="startup-popis" name="startup_popis" rows="4" placeholder="Opíšte váš startup podrobnejšie…" maxlength="500"></textarea>
           <span class="char-counter" id="cnt-startup-popis">0 / 500</span>
         </div>
@@ -1529,6 +1530,7 @@ requiredFields.push(
   ['pain-points','f-painpoints','err-painpoints'],
   ['bootcamp-goal','f-bootcamp-goal','err-bootcamp-goal'],
   ['highlight-foto-url','f-highlight-foto','err-highlight-foto'],
+  ['startup-popis','f-startup-popis','err-startup-popis'],
 );
 
 function validateForm() {
